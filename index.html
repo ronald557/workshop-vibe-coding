@@ -440,6 +440,33 @@
 (function () {
   'use strict';
 
+  // Vul hier de URL van je eigen Cloudflare Worker in (zie backend/README.md).
+  // Zolang dit de placeholder is, gebruikt de app de vaste voorbeeldreacties.
+  var BACKEND_URL = 'VUL-HIER-JE-WORKER-URL-IN';
+
+  function backendGeconfigureerd() {
+    return typeof BACKEND_URL === 'string' && BACKEND_URL.indexOf('VUL-HIER') === -1;
+  }
+
+  function haalAiReactieOp(idee, persona) {
+    return fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        idee: { titel: idee.titel, omschrijving: idee.omschrijving, tag: idee.tag },
+        persona: { naam: persona.naam, rol: persona.rol, karakter: persona.karakter }
+      })
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Serverfout bij AI-aanvraag');
+      return res.json();
+    }).then(function (data) {
+      if (!data || !data.toon || !data.kernpunt || !data.vraag) {
+        throw new Error('Onvolledig AI-antwoord');
+      }
+      return data;
+    });
+  }
+
   var voorbeeldIdee = {
     titel: 'Proef Limburg — een streekbox met het verhaal van de maker',
     omschrijving: 'Een maandelijkse box met seizoensproducten van boeren, kaasmakers en ' +
@@ -856,12 +883,13 @@
     }
 
     var isVoorbeeld = state.idee.titel.trim() === voorbeeldIdee.titel;
+    var gebruikAi = backendGeconfigureerd();
 
     panelGrid.innerHTML = '';
     state.gekozen.forEach(function (id) {
       var p = personas.filter(function (item) { return item.id === id; })[0];
       if (!p) return;
-      var reactie = isVoorbeeld ? p.reactie : p.reserve(state.idee.titel);
+      var vasteReactie = isVoorbeeld ? p.reactie : p.reserve(state.idee.titel);
 
       var kaart = document.createElement('article');
       kaart.className = 'panel-kaart';
@@ -892,12 +920,10 @@
 
       var toonLabel = document.createElement('span');
       toonLabel.className = 'toon-label';
-      toonLabel.textContent = reactie.toon;
       kaart.appendChild(toonLabel);
 
       var kernpunt = document.createElement('p');
       kernpunt.className = 'kernpunt';
-      vulTekstMetTitel(kernpunt, reactie.kernpunt);
       kaart.appendChild(kernpunt);
 
       var vraagKader = document.createElement('div');
@@ -906,12 +932,27 @@
       vraagKop.className = 'vraag-kop';
       vraagKop.textContent = 'Vraagt je:';
       var vraagTekst = document.createElement('p');
-      vulTekstMetTitel(vraagTekst, reactie.vraag);
       vraagKader.appendChild(vraagKop);
       vraagKader.appendChild(vraagTekst);
       kaart.appendChild(vraagKader);
 
       panelGrid.appendChild(kaart);
+
+      function toonReactie(reactie) {
+        toonLabel.textContent = reactie.toon;
+        vulTekstMetTitel(kernpunt, reactie.kernpunt);
+        vulTekstMetTitel(vraagTekst, reactie.vraag);
+      }
+
+      if (gebruikAi) {
+        toonLabel.textContent = 'denkt na …';
+        kernpunt.textContent = 'Even geduld, ' + p.naam + ' denkt na over je idee.';
+        haalAiReactieOp(state.idee, p).then(toonReactie).catch(function () {
+          toonReactie(vasteReactie);
+        });
+      } else {
+        toonReactie(vasteReactie);
+      }
     });
   }
 
