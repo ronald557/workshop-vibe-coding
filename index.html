@@ -458,10 +458,10 @@
       reserve: function (titel) {
         return {
           toon: 'methodisch',
-          kernpunt: 'Voordat ik iets van «' + titel + '» kan vinden, wil ik weten welke ' +
-            'vraag eronder ligt. Nu lees ik vooral een oplossing. Formuleer eerst wat je ' +
-            'nog niet weet.',
-          vraag: 'Welke vraag beantwoordt «' + titel + '» die nu nog openstaat?'
+          kernpunt: ['Voordat ik iets van ', { titel: titel }, ' kan vinden, wil ik weten ' +
+            'welke vraag eronder ligt. Nu lees ik vooral een oplossing. Formuleer eerst ' +
+            'wat je nog niet weet.'],
+          vraag: ['Welke vraag beantwoordt ', { titel: titel }, ' die nu nog openstaat?']
         };
       }
     },
@@ -483,9 +483,9 @@
       reserve: function (titel) {
         return {
           toon: 'concreet',
-          kernpunt: 'Ik snap wat je met «' + titel + '» wil, maar ik zie mezelf het nog ' +
-            'niet gebruiken op een dag dat het tegenzit. Beschrijf eens het precieze ' +
-            'moment waarop ik dit zou pakken.',
+          kernpunt: ['Ik snap wat je met ', { titel: titel }, ' wil, maar ik zie mezelf ' +
+            'het nog niet gebruiken op een dag dat het tegenzit. Beschrijf eens het ' +
+            'precieze moment waarop ik dit zou pakken.'],
           vraag: 'Wat doe ik nu, op dat moment, zonder jouw idee?'
         };
       }
@@ -508,11 +508,11 @@
       reserve: function (titel) {
         return {
           toon: 'kritisch',
-          kernpunt: '«' + titel + '» rust op een aanname die je nog niet hebt getoetst. ' +
-            'Schrijf op wat waar moet zijn wil dit werken, en zoek dan het bewijs dat ' +
-            'het niet waar is.',
-          vraag: 'Welke aanname onder «' + titel + '» zou het hele plan onderuithalen ' +
-            'als hij niet klopt?'
+          kernpunt: [{ titel: titel }, ' rust op een aanname die je nog niet hebt ' +
+            'getoetst. Schrijf op wat waar moet zijn wil dit werken, en zoek dan het ' +
+            'bewijs dat het niet waar is.'],
+          vraag: ['Welke aanname onder ', { titel: titel }, ' zou het hele plan ' +
+            'onderuithalen als hij niet klopt?']
         };
       }
     },
@@ -533,10 +533,10 @@
       reserve: function (titel) {
         return {
           toon: 'zakelijk',
-          kernpunt: 'Voor «' + titel + '» wil ik weten wat het kost en wat het ' +
+          kernpunt: ['Voor ', { titel: titel }, ' wil ik weten wat het kost en wat het ' +
             'vervangt. Een goed idee dat niemand beheert, is over een jaar een ' +
-            'stilgevallen project.',
-          vraag: 'Wat kan er weg of stoppen zodra «' + titel + '» er is?'
+            'stilgevallen project.'],
+          vraag: ['Wat kan er weg of stoppen zodra ', { titel: titel }, ' er is?']
         };
       }
     },
@@ -557,10 +557,10 @@
       reserve: function (titel) {
         return {
           toon: 'bedachtzaam',
-          kernpunt: 'Bij «' + titel + '» vraag ik me af voor wie het níét werkt, en ' +
-            'welke gegevens je onderweg verzamelt zonder dat iemand daarom vroeg.',
-          vraag: 'Wie draagt de last van «' + titel + '» zonder er zelf iets aan te ' +
-            'hebben?'
+          kernpunt: ['Bij ', { titel: titel }, ' vraag ik me af voor wie het níét werkt, ' +
+            'en welke gegevens je onderweg verzamelt zonder dat iemand daarom vroeg.'],
+          vraag: ['Wie draagt de last van ', { titel: titel }, ' zonder er zelf iets aan ' +
+            'te hebben?']
         };
       }
     },
@@ -581,11 +581,11 @@
       reserve: function (titel) {
         return {
           toon: 'enthousiast',
-          kernpunt: '«' + titel + '» klinkt goed, en ik zou het gewoon proberen. Zoek ' +
-            'de kleinst mogelijke versie die je deze week al aan iemand kunt laten ' +
-            'zien.',
-          vraag: 'Wat is de simpelste versie van «' + titel + '» die je zonder bouwen ' +
-            'kunt testen?'
+          kernpunt: [{ titel: titel }, ' klinkt goed, en ik zou het gewoon proberen. ' +
+            'Zoek de kleinst mogelijke versie die je deze week al aan iemand kunt laten ' +
+            'zien.'],
+          vraag: ['Wat is de simpelste versie van ', { titel: titel }, ' die je zonder ' +
+            'bouwen kunt testen?']
         };
       }
     }
@@ -655,6 +655,22 @@
     svg.appendChild(mond);
 
     return svg;
+  }
+
+  function vulTekstMetTitel(element, inhoud) {
+    if (typeof inhoud === 'string') {
+      element.textContent = inhoud;
+      return;
+    }
+    inhoud.forEach(function (deel) {
+      if (deel && typeof deel === 'object') {
+        var sterk = document.createElement('strong');
+        sterk.textContent = deel.titel;
+        element.appendChild(sterk);
+      } else {
+        element.appendChild(document.createTextNode(deel));
+      }
+    });
   }
 
   function toon(nummer) {
@@ -861,7 +877,7 @@
 
       var kernpunt = document.createElement('p');
       kernpunt.className = 'kernpunt';
-      kernpunt.textContent = reactie.kernpunt;
+      vulTekstMetTitel(kernpunt, reactie.kernpunt);
       kaart.appendChild(kernpunt);
 
       var vraagKader = document.createElement('div');
@@ -870,7 +886,7 @@
       vraagKop.className = 'vraag-kop';
       vraagKop.textContent = 'Vraagt je:';
       var vraagTekst = document.createElement('p');
-      vraagTekst.textContent = reactie.vraag;
+      vulTekstMetTitel(vraagTekst, reactie.vraag);
       vraagKader.appendChild(vraagKop);
       vraagKader.appendChild(vraagTekst);
       kaart.appendChild(vraagKader);
