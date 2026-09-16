@@ -1,14 +1,18 @@
 # STRATEGY.md
 
 ## Visie
-Een sparringpartner voor studenten: leg je idee één keer voor en zie meteen hoe
-verschillende persona's erop reageren. Juist het contrast tussen die reacties
-maakt blinde vlekken zichtbaar — vóór het echte gesprek.
+Een sparringpartner voor wie een lokaal eten- of streekproductidee in Limburg
+aanscherpt: leg je concept één keer voor en zie meteen hoe verschillende
+doelgroepsegmenten erop reageren. Juist het contrast tussen die reacties maakt
+blinde vlekken zichtbaar — vóór het echte gesprek met klanten.
 
 ## Doelgroep
-Studenten in ontwerp en onderzoek die een voorstel, concept of scriptieplan
-aanscherpen. Ze pakken de app erbij tijdens het uitwerken, vlak voor een
-tussenpresentatie of begeleidersgesprek.
+Ondernemers, merkteams of studenten die een product-, evenement- of
+streekidee rond lokaal eten in Limburg aanscherpen. Ze pakken de app erbij
+tijdens het uitwerken, vlak voor een pitch of eerste klantgesprek. De
+persona's vertegenwoordigen op hun beurt de consument: mensen die lokaal eten,
+streekproducten en de Limburgse eetcultuur waarderen — van trotse Limburgers
+tot toeristen op zoek naar een authentieke ervaring.
 
 ## Gebruikersflow en schermen
 1. **Idee invoeren** (hoofdscherm): titel, korte omschrijving, optionele
@@ -21,14 +25,19 @@ tussenpresentatie of begeleidersgesprek.
 Op elk scherm terug kunnen, zodat je live van persona's kunt wisselen.
 
 ## Visuele richting
-Rustig en studieus, niet corporate. Lichte achtergrond, veel witruimte, één
-warme accentkleur. Elke persona krijgt een eigen kleuraccent en initiaal-avatar,
-zodat het contrast direct afleesbaar is. Reacties in kaarten, tekst is leidend.
+Volgens de Zuyd-huisstijl: Zuyd-rood, zwart en wit als hoofdkleuren, strak en
+blokkerig met dunne lijnen in plaats van zachte schaduwen. Elke persona krijgt
+een eigen accentkleur uit het officiële Zuyd-kleurenpalet en een illustratief
+gezichtsicoon, zodat het contrast direct afleesbaar is. Reacties in kaarten,
+tekst is leidend.
 
 ## Mock- en demo-data
-- Zes persona's met een vaste toon: begeleider, eindgebruiker, scepticus,
-  opdrachtgever, ethicus, medestudent.
-- Eén voorbereid voorbeeldidee, met één klik in te vullen.
+- Zes persona's die de doelgroep vertegenwoordigen: trotse Limburger,
+  bourgondische genieter, jonge food-avonturier, toerist, plus twee extra
+  nuances voor scherp contrast (kritische consument en
+  streekproducten-ondernemer).
+- Eén voorbereid voorbeeldidee (een streekbox-concept), met één klik in te
+  vullen.
 - Vooraf geschreven reacties per persona; geen live AI.
 
 ## Wat we vandaag bouwen

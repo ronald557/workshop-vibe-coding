@@ -6,12 +6,15 @@
 <title>Panel — leg je idee voor aan zes persona's</title>
 <style>
   :root {
-    --bg: #FBF9F6;
-    --tekst: #1F2430;
-    --tekst-zacht: #5B6270;
-    --kaart-rand: #E8E2D9;
-    --accent: #B8542A;
+    --bg: #FFFFFF;
+    --tekst: #000000;
+    --tekst-zacht: #545454;
+    --kaart-rand: #000000;
+    --vlak-rand: #D6D6D6;
+    --accent: #E81A32;
     --accent-tekst: #FFFFFF;
+    --zwart: #000000;
+    --wit: #FFFFFF;
   }
 
   * { box-sizing: border-box; }
@@ -40,8 +43,7 @@
 
   /* Header */
   .app-header {
-    background: #FFFFFF;
-    border-bottom: 1px solid var(--kaart-rand);
+    background: var(--zwart);
   }
 
   .header-inner {
@@ -53,8 +55,10 @@
   .logo {
     margin: 0 0 16px;
     font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--wit);
   }
 
   .voortgang {
@@ -71,9 +75,9 @@
     align-items: center;
     gap: 8px;
     font-size: 0.9rem;
-    color: var(--tekst-zacht);
+    color: #B8B8B8;
     padding-bottom: 10px;
-    border-bottom: 3px solid var(--kaart-rand);
+    border-bottom: 3px solid #3A3A3A;
   }
 
   .voortgang li .stap-nr {
@@ -83,14 +87,14 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: var(--kaart-rand);
-    color: var(--tekst);
+    background: #3A3A3A;
+    color: var(--wit);
     font-size: 0.8rem;
     flex-shrink: 0;
   }
 
   .voortgang li.actief {
-    color: var(--tekst);
+    color: var(--wit);
     font-weight: 600;
     border-bottom-color: var(--accent);
   }
@@ -104,6 +108,7 @@
   .scherm h2 {
     margin: 8px 0 4px;
     font-size: 1.6rem;
+    font-weight: 800;
   }
 
   .onderschrift {
@@ -122,9 +127,13 @@
     font: inherit;
     color: inherit;
     background: #FFFFFF;
-    border: 1px solid var(--kaart-rand);
-    border-radius: 8px;
+    border: 1px solid var(--vlak-rand);
+    border-radius: 4px;
     padding: 12px 14px;
+  }
+
+  input[type="text"]:focus, textarea:focus {
+    border-color: var(--zwart);
   }
 
   textarea {
@@ -142,7 +151,7 @@
   .tag-btn {
     font: inherit;
     background: #FFFFFF;
-    border: 1px solid var(--kaart-rand);
+    border: 1px solid var(--zwart);
     color: var(--tekst);
     border-radius: 999px;
     padding: 8px 16px;
@@ -171,13 +180,14 @@
     border: 1px solid var(--accent);
     background: var(--accent);
     color: var(--accent-tekst);
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 12px 22px;
+    font-weight: 700;
   }
 
   .btn:disabled {
-    background: var(--kaart-rand);
-    border-color: var(--kaart-rand);
+    background: #E0E0E0;
+    border-color: #E0E0E0;
     color: var(--tekst-zacht);
     cursor: not-allowed;
   }
@@ -185,9 +195,10 @@
   .btn-secundair {
     background: #FFFFFF;
     color: var(--tekst);
-    border: 1px solid var(--kaart-rand);
-    border-radius: 8px;
+    border: 1px solid var(--zwart);
+    border-radius: 4px;
     padding: 12px 22px;
+    font-weight: 700;
   }
 
   /* Persona-raster */
@@ -200,10 +211,9 @@
   .persona-card {
     text-align: left;
     background: #FFFFFF;
-    border: 2px solid var(--kaart-rand);
-    border-radius: 12px;
+    border: 1px solid var(--vlak-rand);
+    border-radius: 4px;
     padding: 18px;
-    box-shadow: 0 1px 3px rgba(31, 36, 48, 0.06);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -211,7 +221,8 @@
   }
 
   .persona-card.geselecteerd {
-    border-color: var(--kleur, var(--accent));
+    border: 2px solid var(--zwart);
+    padding: 17px;
   }
 
   .persona-card:disabled {
@@ -230,11 +241,11 @@
     height: 44px;
     border-radius: 50%;
     background: var(--kleur, var(--accent));
-    color: #FFFFFF;
+    color: var(--kleur-tekst, #FFFFFF);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+    overflow: hidden;
     flex-shrink: 0;
   }
 
@@ -249,7 +260,7 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: var(--kleur, var(--accent));
+    background: var(--accent);
     color: #FFFFFF;
     display: none;
     align-items: center;
@@ -276,11 +287,12 @@
 
   .idee-tag-label {
     display: inline-block;
-    background: var(--kaart-rand);
-    color: var(--tekst);
+    background: var(--zwart);
+    color: var(--wit);
     border-radius: 999px;
     padding: 4px 12px;
     font-size: 0.85rem;
+    font-weight: 600;
   }
 
   .panel-grid {
@@ -291,10 +303,9 @@
 
   .panel-kaart {
     background: #FFFFFF;
-    border: 1px solid var(--kaart-rand);
-    border-radius: 12px;
+    border: 1px solid var(--zwart);
+    border-radius: 4px;
     padding: 20px;
-    box-shadow: 0 1px 3px rgba(31, 36, 48, 0.06);
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -308,8 +319,8 @@
     letter-spacing: 0.04em;
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--kleur, var(--accent));
-    border: 1px solid var(--kleur, var(--accent));
+    color: var(--kleur-tekst, #FFFFFF);
+    background: var(--kleur, var(--accent));
     border-radius: 999px;
     padding: 3px 10px;
   }
@@ -320,8 +331,8 @@
 
   .vraag-kader {
     background: var(--kleur, var(--accent));
-    color: #FFFFFF;
-    border-radius: 10px;
+    color: var(--kleur-tekst, #FFFFFF);
+    border-radius: 4px;
     padding: 14px 16px;
   }
 
@@ -373,10 +384,10 @@
     <textarea id="omschrijving-input"></textarea>
 
     <div class="tags" id="tags" role="group" aria-label="Context">
-      <button type="button" class="tag-btn" data-tag="Afstudeerproject">Afstudeerproject</button>
-      <button type="button" class="tag-btn" data-tag="Concept">Concept</button>
-      <button type="button" class="tag-btn" data-tag="Onderzoeksvoorstel">Onderzoeksvoorstel</button>
-      <button type="button" class="tag-btn" data-tag="Ontwerpvraag">Ontwerpvraag</button>
+      <button type="button" class="tag-btn" data-tag="Productconcept">Productconcept</button>
+      <button type="button" class="tag-btn" data-tag="Streekinitiatief">Streekinitiatief</button>
+      <button type="button" class="tag-btn" data-tag="Evenement">Evenement</button>
+      <button type="button" class="tag-btn" data-tag="Marktonderzoek">Marktonderzoek</button>
       <button type="button" class="tag-btn" data-tag="Anders">Anders</button>
     </div>
 
@@ -420,161 +431,171 @@
   'use strict';
 
   var voorbeeldIdee = {
-    titel: 'Stille Ruimte — vind een rustige plek op de campus',
-    omschrijving: 'Studenten die snel overprikkeld raken vinden tussen colleges door ' +
-      'geen rustige plek. Ik wil onderzoeken of een app kan helpen die laat zien welke ' +
-      'ruimtes op dit moment stil en vrij zijn, op basis van roosterdata en meldingen ' +
-      'van studenten zelf.',
-    tag: 'Afstudeerproject'
+    titel: 'Proef Limburg — een streekbox met het verhaal van de maker',
+    omschrijving: 'Een maandelijkse box met seizoensproducten van boeren, kaasmakers en ' +
+      'imkers uit Limburg, met bij elk product een kort verhaal over de maker. Niet ' +
+      'alleen het product proeven, maar ook de streek en de mensen erachter leren ' +
+      'kennen.',
+    tag: 'Productconcept'
   };
 
   var personas = [
     {
-      id: 'marieke',
-      naam: 'Marieke de Wit',
-      rol: 'Begeleider',
-      karakter: 'Let op je onderbouwing en of je vraag wel scherp genoeg is.',
-      kleur: '#3B5BA5',
-      initialen: 'MW',
+      id: 'marij',
+      naam: 'Marij Verhoeven',
+      rol: 'Trotse Limburger',
+      karakter: 'Kent de herkomst van bijna alles op haar bord en is trots op haar streek.',
+      kleur: '#FFE600',
+      kleurTekst: '#000000',
       reactie: {
-        toon: 'methodisch',
-        kernpunt: 'Je schuift twee dingen door elkaar: een ontwerpvraag en een ' +
-          'onderzoeksvraag. Je beschrijft de app al, en daarmee ligt de uitkomst vast ' +
-          'voordat je onderzoek begint. Begin bij wat je nog niet weet.',
-        vraag: 'Wat zou je onderzoek kunnen laten zien waardoor je deze app juist niet ' +
-          'gaat bouwen?'
+        toon: 'trots',
+        kernpunt: 'Ik herken veel van deze makers al van de markt in het weekend, en ' +
+          'ik vind het mooi dat hun verhaal nu ook bij het product komt. Zorg wel dat ' +
+          'dit geen verzameling wordt die vooral voor toeristen is bedacht — ik wil dat ' +
+          'ik en mijn buren ons er ook in herkennen.',
+        vraag: 'Voelt een Limburger zich hier nog thuis in, of is dit vooral gemaakt ' +
+          'voor mensen van buiten de streek?'
       },
       reserve: function (titel) {
         return {
-          toon: 'methodisch',
-          kernpunt: 'Voordat ik iets van «' + titel + '» kan vinden, wil ik weten welke ' +
-            'vraag eronder ligt. Nu lees ik vooral een oplossing. Formuleer eerst wat je ' +
-            'nog niet weet.',
-          vraag: 'Welke vraag beantwoordt «' + titel + '» die nu nog openstaat?'
+          toon: 'trots',
+          kernpunt: ['Bij ', { titel: titel }, ' wil ik vooral weten of dit ook iets is ' +
+            'voor mensen die hier al hun hele leven wonen, niet alleen voor bezoekers. ' +
+            'Ik ken deze streek, dus ik prik zo door iets heen dat vooral op vertoon is ' +
+            'gemaakt.'],
+          vraag: ['Voelt een echte Limburger zich thuis bij ', { titel: titel }, ', of is ' +
+            'dit vooral voor de buitenwacht bedoeld?']
         };
       }
     },
     {
-      id: 'sam',
-      naam: 'Sam Veldhuis',
-      rol: 'Eindgebruiker',
-      karakter: 'Praat vanuit een gewone dag, niet vanuit theorie.',
-      kleur: '#2F7D5A',
-      initialen: 'SV',
+      id: 'twan',
+      naam: 'Twan Königs',
+      rol: 'Bourgondische genieter',
+      karakter: 'Geniet het meest van eten wanneer het gedeeld wordt, het liefst aan een ' +
+        'volle tafel.',
+      kleur: '#007BC7',
+      kleurTekst: '#FFFFFF',
       reactie: {
-        toon: 'concreet',
-        kernpunt: 'Op een drukke dag open ik echt geen app om een plek te zoeken — dan ' +
-          'ben ik al over mijn grens heen. Wat mij helpt is vooraf weten waar ik ' +
-          'terechtkan, niet ter plekke nog moeten zoeken. En klopt het één keer niet, ' +
-          'dan gebruik ik hem nooit meer.',
-        vraag: 'Wat gebeurt er met mijn vertrouwen als de app er één keer naast zit?'
+        toon: 'gezellig',
+        kernpunt: 'Zo’n box klinkt goed, maar voor mij draait het om het moment ' +
+          'eromheen: samen de kaas proeven, het verhaal voorlezen aan tafel, er een ' +
+          'avond van maken. Zorg dat het uitnodigt om te delen, niet om alleen even ' +
+          'snel iets te proeven.',
+        vraag: 'Wat gebeurt hier als ik dit met vrienden aan tafel wil beleven in ' +
+          'plaats van alleen thuis opeten?'
       },
       reserve: function (titel) {
         return {
-          toon: 'concreet',
-          kernpunt: 'Ik snap wat je met «' + titel + '» wil, maar ik zie mezelf het nog ' +
-            'niet gebruiken op een dag dat het tegenzit. Beschrijf eens het precieze ' +
-            'moment waarop ik dit zou pakken.',
-          vraag: 'Wat doe ik nu, op dat moment, zonder jouw idee?'
+          toon: 'gezellig',
+          kernpunt: ['Ik zie bij ', { titel: titel }, ' vooral kansen om er een avond ' +
+            'met vrienden van te maken, maar dan moet het wel uitnodigen tot delen en ' +
+            'niet blijven steken bij één portie voor mezelf.'],
+          vraag: ['Hoe maakt ', { titel: titel }, ' er een moment van samenzijn van, en ' +
+            'niet alleen een aankoop?']
         };
       }
     },
     {
-      id: 'hakim',
-      naam: 'Hakim Boulahrouz',
-      rol: 'Scepticus',
-      karakter: 'Gelooft niets tot het bewezen is en zoekt het gat in je verhaal.',
-      kleur: '#8E2F3F',
-      initialen: 'HB',
+      id: 'fenna',
+      naam: 'Fenna de Groot',
+      rol: 'Jonge food-avonturier',
+      karakter: 'Zoekt liever een bijzondere smaak dan een bekend merk, en deelt het ' +
+        'meteen online.',
+      kleur: '#FFB9D7',
+      kleurTekst: '#000000',
+      reactie: {
+        toon: 'nieuwsgierig',
+        kernpunt: 'Het verhaal achter elk product is precies waar ik naar op zoek ben ' +
+          '— dat zou ik delen. Maar dan moet het wel iets te bieden hebben om te laten ' +
+          'zien: een verpakking, een filmpje van de maker, iets om vast te pakken.',
+        vraag: 'Wat maak ik hiervan een foto van, zodat ik het aan anderen kan laten ' +
+          'zien?'
+      },
+      reserve: function (titel) {
+        return {
+          toon: 'nieuwsgierig',
+          kernpunt: [{ titel: titel }, ' spreekt me aan zolang het ook iets oplevert om ' +
+            'te laten zien: een moment, een verpakking, een verhaal dat ik in tien ' +
+            'seconden kan doorvertellen.'],
+          vraag: ['Wat is het beeld dat mensen van ', { titel: titel }, ' zouden delen?']
+        };
+      }
+    },
+    {
+      id: 'lukas',
+      naam: 'Lukas Berger',
+      rol: 'Toerist',
+      karakter: 'Wil op vakantie iets proeven dat hij thuis nergens anders kan krijgen.',
+      kleur: '#82C8B4',
+      kleurTekst: '#000000',
+      reactie: {
+        toon: 'ontdekkend',
+        kernpunt: 'Ik kom hier maar een paar dagen, dus een box die pas volgende maand ' +
+          'thuisbezorgd wordt heeft voor mij weinig zin. Ik wil de streek nú proeven, ' +
+          'het liefst op de plek zelf waar het gemaakt wordt.',
+        vraag: 'Wat heb ik hieraan als ik hier morgen alweer wegga?'
+      },
+      reserve: function (titel) {
+        return {
+          toon: 'ontdekkend',
+          kernpunt: ['Als toerist heb ik meestal maar een paar dagen, dus ', { titel: titel },
+            ' moet mij ook nu meteen iets laten proeven — niet pas volgende maand op de ' +
+            'deurmat.'],
+          vraag: ['Wat biedt ', { titel: titel }, ' iemand die hier maar kort is?']
+        };
+      }
+    },
+    {
+      id: 'sanne',
+      naam: 'Sanne Peeters',
+      rol: 'Kritische consument',
+      karakter: 'Gelooft pas in ‘lokaal’ en ‘authentiek’ als ze het zelf ' +
+        'kan navragen.',
+      kleur: '#2D2382',
+      kleurTekst: '#FFFFFF',
       reactie: {
         toon: 'kritisch',
-        kernpunt: 'Je aanname is dat studenten hun rustplek willen delen. ' +
-          'Waarschijnlijker is dat ze hun goede plek juist geheimhouden. En werkt de ' +
-          'app wél, dan stromen de stille ruimtes vol en is het probleem terug — alleen ' +
-          'sneller.',
-        vraag: 'Wat weerhoudt jouw oplossing ervan zichzelf kapot te maken?'
+        kernpunt: '‘Streekproduct’ en ‘verhaal van de maker’ klinken ' +
+          'mooi, maar dat label plakken veel bedrijven er tegenwoordig op zonder dat het ' +
+          'klopt. Ik wil weten hoeveel procent van wat erin zit ook echt uit Limburg ' +
+          'komt, en van wie.',
+        vraag: 'Wat gebeurt er als iemand navraagt waar een product precies vandaan ' +
+          'komt — houdt het verhaal dan nog stand?'
       },
       reserve: function (titel) {
         return {
           toon: 'kritisch',
-          kernpunt: '«' + titel + '» rust op een aanname die je nog niet hebt getoetst. ' +
-            'Schrijf op wat waar moet zijn wil dit werken, en zoek dan het bewijs dat ' +
-            'het niet waar is.',
-          vraag: 'Welke aanname onder «' + titel + '» zou het hele plan onderuithalen ' +
-            'als hij niet klopt?'
+          kernpunt: ['Bij ', { titel: titel }, ' wil ik eerst weten wie dat verhaal ' +
+            'controleert. “Lokaal” en “echt” worden vaak beloofd ' +
+            'zonder dat het ergens wordt nagegaan.'],
+          vraag: ['Wie checkt of de claims achter ', { titel: titel }, ' ook echt kloppen?']
         };
       }
     },
     {
-      id: 'ellen',
-      naam: 'Ellen Bouma',
-      rol: 'Opdrachtgever',
-      karakter: 'Denkt in budget, planning en wat het uiteindelijk oplevert.',
-      kleur: '#A5761B',
-      initialen: 'EB',
+      id: 'huub',
+      naam: 'Huub Smeets',
+      rol: 'Streekproducten-ondernemer',
+      karakter: 'Verkoopt al twintig jaar zelfgemaakte producten en kent de marges op ' +
+        'zijn duimpje.',
+      kleur: '#F07800',
+      kleurTekst: '#000000',
       reactie: {
         toon: 'zakelijk',
-        kernpunt: 'De campus heeft al roostersoftware en sensoren in de gebouwen. Een ' +
-          'losse app betekent een tweede systeem met eigen beheer en eigen kosten. Ik ' +
-          'zie dit eerder als functie binnen wat er al staat.',
-        vraag: 'Wie beheert dit over twee jaar, als jij allang bent afgestudeerd?'
+        kernpunt: 'Mooi idee, maar wie neemt het risico als een levering een keer ' +
+          'misgaat, en wat houden wijzelf als makers eraan over? Als de marge bij een ' +
+          'tussenpartij blijft hangen, doe ik liever zelf de markt op zaterdag.',
+        vraag: 'Wat blijft er voor de maker zelf over als dit tussen ons en de klant in ' +
+          'komt te staan?'
       },
       reserve: function (titel) {
         return {
           toon: 'zakelijk',
-          kernpunt: 'Voor «' + titel + '» wil ik weten wat het kost en wat het ' +
-            'vervangt. Een goed idee dat niemand beheert, is over een jaar een ' +
-            'stilgevallen project.',
-          vraag: 'Wat kan er weg of stoppen zodra «' + titel + '» er is?'
-        };
-      }
-    },
-    {
-      id: 'ruth',
-      naam: 'Ruth Nakamura',
-      rol: 'Ethicus',
-      karakter: 'Vraagt wie er buiten de boot valt en wat er met gegevens gebeurt.',
-      kleur: '#6B4EA0',
-      initialen: 'RN',
-      reactie: {
-        toon: 'bedachtzaam',
-        kernpunt: 'Je bouwt ongemerkt een kaart van waar mensen zich terugtrekken, en ' +
-          'wie dat zijn. Prikkelgevoeligheid raakt aan gezondheid, dus dat is gevoelige ' +
-          'informatie. Ook een goedbedoelde meldknop legt vast wie waar zat.',
-        vraag: 'Kun je iemand helpen zonder te weten wie diegene is?'
-      },
-      reserve: function (titel) {
-        return {
-          toon: 'bedachtzaam',
-          kernpunt: 'Bij «' + titel + '» vraag ik me af voor wie het níét werkt, en ' +
-            'welke gegevens je onderweg verzamelt zonder dat iemand daarom vroeg.',
-          vraag: 'Wie draagt de last van «' + titel + '» zonder er zelf iets aan te ' +
-            'hebben?'
-        };
-      }
-    },
-    {
-      id: 'tygo',
-      naam: 'Tygo Vermeer',
-      rol: 'Medestudent',
-      karakter: 'Enthousiast, denkt hardop mee en ziet vooral kansen.',
-      kleur: '#1F7A8C',
-      initialen: 'TV',
-      reactie: {
-        toon: 'enthousiast',
-        kernpunt: 'Hier loop ik zelf tegenaan, ik zou dit morgen gebruiken. Je zou ' +
-          'zelfs verder kunnen gaan: laat mensen ook aangeven hóé het er voelt, niet ' +
-          'alleen of het vrij is. Maar begin klein, met één gebouw.',
-        vraag: 'Kun je dit volgende week testen met plakbriefjes in plaats van code?'
-      },
-      reserve: function (titel) {
-        return {
-          toon: 'enthousiast',
-          kernpunt: '«' + titel + '» klinkt goed, en ik zou het gewoon proberen. Zoek ' +
-            'de kleinst mogelijke versie die je deze week al aan iemand kunt laten ' +
-            'zien.',
-          vraag: 'Wat is de simpelste versie van «' + titel + '» die je zonder bouwen ' +
-            'kunt testen?'
+          kernpunt: ['Voor ', { titel: titel }, ' wil ik weten wat de marge is voor de ' +
+            'maker zelf, en wie het risico draagt als een levering misgaat. Zonder dat ' +
+            'blijft het een mooi idee op papier.'],
+          vraag: ['Wat houdt een maker zelf over aan ', { titel: titel }, '?']
         };
       }
     }
@@ -600,6 +621,67 @@
   var wisselBtn = document.getElementById('wissel-btn');
   var opnieuwBtn = document.getElementById('opnieuw-btn');
   var voortgangItems = document.querySelectorAll('#voortgang li');
+
+  function maakAvatarIcon() {
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('width', '26');
+    svg.setAttribute('height', '26');
+    svg.setAttribute('aria-hidden', 'true');
+
+    var schouders = document.createElementNS(svgNS, 'path');
+    schouders.setAttribute('d', 'M3 23c0-5.4 4.4-8.8 9-8.8s9 3.4 9 8.8');
+    schouders.setAttribute('fill', 'currentColor');
+    svg.appendChild(schouders);
+
+    var hoofd = document.createElementNS(svgNS, 'circle');
+    hoofd.setAttribute('cx', '12');
+    hoofd.setAttribute('cy', '8.4');
+    hoofd.setAttribute('r', '5.4');
+    hoofd.setAttribute('fill', 'currentColor');
+    svg.appendChild(hoofd);
+
+    var oogLinks = document.createElementNS(svgNS, 'circle');
+    oogLinks.setAttribute('cx', '9.8');
+    oogLinks.setAttribute('cy', '8.2');
+    oogLinks.setAttribute('r', '0.9');
+    oogLinks.setAttribute('fill', 'var(--kleur)');
+    svg.appendChild(oogLinks);
+
+    var oogRechts = document.createElementNS(svgNS, 'circle');
+    oogRechts.setAttribute('cx', '14.2');
+    oogRechts.setAttribute('cy', '8.2');
+    oogRechts.setAttribute('r', '0.9');
+    oogRechts.setAttribute('fill', 'var(--kleur)');
+    svg.appendChild(oogRechts);
+
+    var mond = document.createElementNS(svgNS, 'path');
+    mond.setAttribute('d', 'M9.4 10.9c1 1.1 4.2 1.1 5.2 0');
+    mond.setAttribute('stroke', 'var(--kleur)');
+    mond.setAttribute('stroke-width', '1.1');
+    mond.setAttribute('stroke-linecap', 'round');
+    mond.setAttribute('fill', 'none');
+    svg.appendChild(mond);
+
+    return svg;
+  }
+
+  function vulTekstMetTitel(element, inhoud) {
+    if (typeof inhoud === 'string') {
+      element.textContent = inhoud;
+      return;
+    }
+    inhoud.forEach(function (deel) {
+      if (deel && typeof deel === 'object') {
+        var sterk = document.createElement('strong');
+        sterk.textContent = deel.titel;
+        element.appendChild(sterk);
+      } else {
+        element.appendChild(document.createTextNode(deel));
+      }
+    });
+  }
 
   function toon(nummer) {
     state.scherm = nummer;
@@ -675,6 +757,7 @@
       btn.setAttribute('data-id', p.id);
       btn.setAttribute('aria-pressed', 'false');
       btn.style.setProperty('--kleur', p.kleur);
+      btn.style.setProperty('--kleur-tekst', p.kleurTekst);
 
       var vinkje = document.createElement('span');
       vinkje.className = 'vinkje';
@@ -687,8 +770,7 @@
 
       var avatar = document.createElement('span');
       avatar.className = 'avatar';
-      avatar.setAttribute('aria-hidden', 'true');
-      avatar.textContent = p.initialen;
+      avatar.appendChild(maakAvatarIcon());
       top.appendChild(avatar);
 
       var namenWrap = document.createElement('span');
@@ -774,14 +856,14 @@
       var kaart = document.createElement('article');
       kaart.className = 'panel-kaart';
       kaart.style.setProperty('--kleur', p.kleur);
+      kaart.style.setProperty('--kleur-tekst', p.kleurTekst);
 
       var top = document.createElement('div');
       top.className = 'persona-top';
 
       var avatar = document.createElement('span');
       avatar.className = 'avatar';
-      avatar.setAttribute('aria-hidden', 'true');
-      avatar.textContent = p.initialen;
+      avatar.appendChild(maakAvatarIcon());
       top.appendChild(avatar);
 
       var namenWrap = document.createElement('span');
@@ -805,7 +887,7 @@
 
       var kernpunt = document.createElement('p');
       kernpunt.className = 'kernpunt';
-      kernpunt.textContent = reactie.kernpunt;
+      vulTekstMetTitel(kernpunt, reactie.kernpunt);
       kaart.appendChild(kernpunt);
 
       var vraagKader = document.createElement('div');
@@ -814,7 +896,7 @@
       vraagKop.className = 'vraag-kop';
       vraagKop.textContent = 'Vraagt je:';
       var vraagTekst = document.createElement('p');
-      vraagTekst.textContent = reactie.vraag;
+      vulTekstMetTitel(vraagTekst, reactie.vraag);
       vraagKader.appendChild(vraagKop);
       vraagKader.appendChild(vraagTekst);
       kaart.appendChild(vraagKader);
