@@ -349,6 +349,77 @@
     margin: 0;
   }
 
+  .vervolg-blok {
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--vlak-rand);
+  }
+
+  .vervolg-kop {
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--tekst-zacht);
+    margin: 0 0 4px;
+  }
+
+  .vervolg-tekst {
+    margin: 0 0 10px;
+  }
+
+  .suggestie-kader {
+    background: #F5F5F5;
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 10px 12px;
+  }
+
+  .suggestie-kop {
+    display: block;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+
+  .suggestie-kader p {
+    margin: 0;
+  }
+
+  .samenvatting {
+    margin-top: 24px;
+    background: var(--zwart);
+    color: var(--wit);
+    border-radius: 4px;
+    padding: 24px;
+  }
+
+  .samenvatting h3 {
+    margin: 0 0 12px;
+    font-size: 1.2rem;
+  }
+
+  .samenvatting p {
+    margin: 0;
+    color: #CFCFCF;
+  }
+
+  .samenvatting ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .samenvatting li {
+    margin-bottom: 8px;
+  }
+
+  .samenvatting li:last-child {
+    margin-bottom: 0;
+  }
+
   [hidden] { display: none !important; }
 
   /* Achtergrond: silhouet provincie Limburg */
@@ -428,6 +499,8 @@
 
     <div class="panel-grid" id="panel-grid"></div>
 
+    <div class="samenvatting" id="samenvatting" hidden></div>
+
     <div class="acties">
       <button type="button" class="btn-secundair" id="wissel-btn">← Wissel persona's</button>
       <button type="button" class="btn" id="opnieuw-btn">Begin opnieuw</button>
@@ -448,23 +521,61 @@
     return typeof BACKEND_URL === 'string' && BACKEND_URL.indexOf('VUL-HIER') === -1;
   }
 
-  function haalAiReactieOp(idee, persona) {
+  function haalAiOp(payload) {
     return fetch(BACKEND_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        idee: { titel: idee.titel, omschrijving: idee.omschrijving, tag: idee.tag },
-        persona: { naam: persona.naam, rol: persona.rol, karakter: persona.karakter }
-      })
+      body: JSON.stringify(payload)
     }).then(function (res) {
       if (!res.ok) throw new Error('Serverfout bij AI-aanvraag');
       return res.json();
+    });
+  }
+
+  function haalAiReactieOp(idee, persona) {
+    return haalAiOp({
+      idee: { titel: idee.titel, omschrijving: idee.omschrijving, tag: idee.tag },
+      persona: { naam: persona.naam, rol: persona.rol, karakter: persona.karakter }
     }).then(function (data) {
       if (!data || !data.toon || !data.kernpunt || !data.vraag) {
         throw new Error('Onvolledig AI-antwoord');
       }
       return data;
     });
+  }
+
+  function haalAiVervolgOp(idee, persona, paneel) {
+    return haalAiOp({
+      modus: 'vervolg',
+      idee: { titel: idee.titel, omschrijving: idee.omschrijving, tag: idee.tag },
+      persona: { naam: persona.naam, rol: persona.rol, karakter: persona.karakter },
+      paneel: paneel
+    }).then(function (data) {
+      if (!data || !data.reactieOpPanel || !data.suggestie) {
+        throw new Error('Onvolledig AI-antwoord');
+      }
+      return data;
+    });
+  }
+
+  function haalAiSamenvattingOp(idee, paneel) {
+    return haalAiOp({
+      modus: 'samenvatting',
+      idee: { titel: idee.titel, omschrijving: idee.omschrijving, tag: idee.tag },
+      paneel: paneel
+    }).then(function (data) {
+      if (!data || !Array.isArray(data.verbeterpunten) || data.verbeterpunten.length === 0) {
+        throw new Error('Onvolledig AI-antwoord');
+      }
+      return data;
+    });
+  }
+
+  function plattTekst(inhoud) {
+    if (typeof inhoud === 'string') return inhoud;
+    return inhoud.map(function (deel) {
+      return (deel && typeof deel === 'object') ? deel.titel : deel;
+    }).join('');
   }
 
   var voorbeeldIdee = {
@@ -655,6 +766,7 @@
   var naarScherm3Btn = document.getElementById('naar-scherm3-btn');
   var ideeSamenvatting = document.getElementById('idee-samenvatting');
   var panelGrid = document.getElementById('panel-grid');
+  var samenvattingEl = document.getElementById('samenvatting');
   var wisselBtn = document.getElementById('wissel-btn');
   var opnieuwBtn = document.getElementById('opnieuw-btn');
   var voortgangItems = document.querySelectorAll('#voortgang li');
@@ -886,6 +998,11 @@
     var gebruikAi = backendGeconfigureerd();
 
     panelGrid.innerHTML = '';
+    samenvattingEl.innerHTML = '';
+    samenvattingEl.hidden = true;
+
+    var ronde1Beloftes = [];
+
     state.gekozen.forEach(function (id) {
       var p = personas.filter(function (item) { return item.id === id; })[0];
       if (!p) return;
@@ -936,6 +1053,37 @@
       vraagKader.appendChild(vraagTekst);
       kaart.appendChild(vraagKader);
 
+      var vervolgBlok = null;
+      var vervolgTekst = null;
+      var suggestieTekst = null;
+
+      if (gebruikAi) {
+        vervolgBlok = document.createElement('div');
+        vervolgBlok.className = 'vervolg-blok';
+        vervolgBlok.hidden = true;
+
+        var vervolgKop = document.createElement('p');
+        vervolgKop.className = 'vervolg-kop';
+        vervolgKop.textContent = 'Reactie op het panel';
+        vervolgBlok.appendChild(vervolgKop);
+
+        vervolgTekst = document.createElement('p');
+        vervolgTekst.className = 'vervolg-tekst';
+        vervolgBlok.appendChild(vervolgTekst);
+
+        var suggestieKader = document.createElement('div');
+        suggestieKader.className = 'suggestie-kader';
+        var suggestieKop = document.createElement('span');
+        suggestieKop.className = 'suggestie-kop';
+        suggestieKop.textContent = 'Suggestie:';
+        suggestieTekst = document.createElement('p');
+        suggestieKader.appendChild(suggestieKop);
+        suggestieKader.appendChild(suggestieTekst);
+        vervolgBlok.appendChild(suggestieKader);
+
+        kaart.appendChild(vervolgBlok);
+      }
+
       panelGrid.appendChild(kaart);
 
       function toonReactie(reactie) {
@@ -944,15 +1092,96 @@
         vulTekstMetTitel(vraagTekst, reactie.vraag);
       }
 
+      var ronde1Belofte;
       if (gebruikAi) {
         toonLabel.textContent = 'denkt na …';
         kernpunt.textContent = 'Even geduld, ' + p.naam + ' denkt na over je idee.';
-        haalAiReactieOp(state.idee, p).then(toonReactie).catch(function () {
-          toonReactie(vasteReactie);
+        ronde1Belofte = haalAiReactieOp(state.idee, p).catch(function () {
+          return vasteReactie;
         });
       } else {
-        toonReactie(vasteReactie);
+        ronde1Belofte = Promise.resolve(vasteReactie);
       }
+
+      ronde1Beloftes.push(ronde1Belofte.then(function (reactie) {
+        toonReactie(reactie);
+        return {
+          id: p.id,
+          naam: p.naam,
+          rol: p.rol,
+          karakter: p.karakter,
+          kernpunt: plattTekst(reactie.kernpunt),
+          vraag: plattTekst(reactie.vraag),
+          vervolgBlok: vervolgBlok,
+          vervolgTekst: vervolgTekst,
+          suggestieTekst: suggestieTekst
+        };
+      }));
+    });
+
+    if (!gebruikAi) return;
+
+    // Ronde 2: elke persona reageert op de eerste reacties van de anderen.
+    Promise.all(ronde1Beloftes).then(function (deelnemers) {
+      var ronde2Beloftes = deelnemers.map(function (deelnemer) {
+        var anderen = deelnemers.filter(function (d) { return d.id !== deelnemer.id; })
+          .map(function (d) { return { naam: d.naam, rol: d.rol, kernpunt: d.kernpunt, vraag: d.vraag }; });
+
+        deelnemer.vervolgBlok.hidden = false;
+        deelnemer.vervolgTekst.textContent = deelnemer.naam + ' bekijkt de andere reacties …';
+
+        var persoonInfo = { naam: deelnemer.naam, rol: deelnemer.rol, karakter: deelnemer.karakter };
+        return haalAiVervolgOp(state.idee, persoonInfo, anderen).then(function (resultaat) {
+          deelnemer.vervolgTekst.textContent = resultaat.reactieOpPanel;
+          deelnemer.suggestieTekst.textContent = resultaat.suggestie;
+          deelnemer.reactieOpPanel = resultaat.reactieOpPanel;
+          deelnemer.suggestie = resultaat.suggestie;
+          return deelnemer;
+        }).catch(function () {
+          deelnemer.vervolgBlok.hidden = true;
+          return deelnemer;
+        });
+      });
+
+      // Ronde 3: een neutrale samenvatting van het hele gesprek.
+      Promise.all(ronde2Beloftes).then(function (bijgewerkt) {
+        var compleet = bijgewerkt.filter(function (d) { return d.suggestie; });
+        if (compleet.length === 0) return;
+
+        samenvattingEl.hidden = false;
+        var kop = document.createElement('h3');
+        kop.textContent = 'Wat het panel je aanraadt';
+        samenvattingEl.appendChild(kop);
+        var laden = document.createElement('p');
+        laden.textContent = 'Het panel stelt een samenvatting op …';
+        samenvattingEl.appendChild(laden);
+
+        var paneelVoorSamenvatting = compleet.map(function (d) {
+          return {
+            naam: d.naam,
+            rol: d.rol,
+            kernpunt: d.kernpunt,
+            reactieOpPanel: d.reactieOpPanel,
+            suggestie: d.suggestie
+          };
+        });
+
+        haalAiSamenvattingOp(state.idee, paneelVoorSamenvatting).then(function (resultaat) {
+          samenvattingEl.innerHTML = '';
+          var kop2 = document.createElement('h3');
+          kop2.textContent = 'Wat het panel je aanraadt';
+          samenvattingEl.appendChild(kop2);
+          var lijst = document.createElement('ul');
+          resultaat.verbeterpunten.forEach(function (punt) {
+            var item = document.createElement('li');
+            item.textContent = punt;
+            lijst.appendChild(item);
+          });
+          samenvattingEl.appendChild(lijst);
+        }).catch(function () {
+          samenvattingEl.hidden = true;
+        });
+      });
     });
   }
 
