@@ -207,8 +207,10 @@ export default {
       return jsonResponse(resultaat);
     } catch (err) {
       if (err && err.status) {
+        console.error('Backend-fout (' + err.status + '):', err.error, err.details || '', err.ruw || '');
         return jsonResponse({ error: err.error, ruw: err.ruw, details: err.details }, err.status);
       }
+      console.error('Onverwachte fout:', err);
       return jsonResponse({ error: 'Onverwachte fout.', details: String(err) }, 500);
     }
   },
