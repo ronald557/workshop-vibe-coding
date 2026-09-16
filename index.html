@@ -4,16 +4,234 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Festivo — Evenementen</title>
-<link rel="stylesheet" href="styles.css">
+<style>
+  :root {
+    --bg: #0f1220;
+    --card: #1a1f36;
+    --accent: #ff6b6b;
+    --accent2: #ffd166;
+    --text: #f5f6fa;
+    --muted: #a0a5c0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(160deg, var(--bg), #171b30 60%);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .logo span { color: var(--accent); }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color .2s;
+  }
+  nav a:hover { color: var(--text); }
+
+  .hero {
+    text-align: center;
+    padding: 3rem 1.5rem 2rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    margin: 0 0 0.6rem;
+  }
+  .hero p {
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* Filter */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .filter-btn {
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--muted);
+    padding: 0.45rem 1.1rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .filter-btn:hover { color: var(--text); border-color: var(--text); }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
+  .card {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: var(--card);
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    transition: transform .2s;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+  }
+  .card:hover { transform: translateY(-6px); }
+  .card-banner {
+    height: 100px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    position: relative;
+  }
+  .card-banner .tag {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    background: rgba(15,18,32,.6);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .card-body { padding: 1.2rem; }
+  .card-body h3 { margin: 0 0 0.4rem; font-size: 1.2rem; }
+  .card-body .meta {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0.2rem 0;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  .greet {
+    text-align: center;
+    padding: 1rem 1.5rem 3rem;
+  }
+  button {
+    font-family: inherit;
+  }
+  .greet button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+  }
+  .greet button:hover { background: #ff4f4f; }
+  .greet button:active { transform: scale(0.97); }
+  #greeting {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: var(--accent2);
+    min-height: 1.5em;
+  }
+
+  /* Modal */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    z-index: 10;
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: var(--card);
+    border-radius: 16px;
+    max-width: 480px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,.5);
+    position: relative;
+  }
+  .modal-banner {
+    height: 140px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+  .modal-body { padding: 1.5rem; }
+  .modal-body h2 { margin: 0 0 0.5rem; }
+  .modal-body .meta { color: var(--muted); margin: 0.25rem 0; }
+  .modal-body .desc { margin-top: 1rem; line-height: 1.6; }
+  .modal-close {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    background: rgba(15,18,32,.7);
+    color: #fff;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .modal-close:hover { background: var(--accent); }
+</style>
 </head>
 <body>
 
 <header>
-  <a class="logo" href="index.html">Festivo<span>.</span></a>
+  <a class="logo" href="#">Festivo<span>.</span></a>
   <nav>
     <ul>
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="index.html#evenementen">Evenementen</a></li>
+      <li><a href="#">Home</a></li>
+      <li><a href="#evenementen">Evenementen</a></li>
       <li><a href="#">Over ons</a></li>
       <li><a href="#">Contact</a></li>
     </ul>
@@ -22,44 +240,107 @@
 
 <section class="hero">
   <h1>Ontdek events bij jou in de buurt</h1>
-  <p>Muziek, eten en cultuur — alles op één plek. Bekijk wat er binnenkort te doen is.</p>
+  <p>Muziek, eten en cultuur — alles op één plek. Klik op een kaart voor meer info.</p>
 </section>
 
-<section class="cards" id="evenementen">
-  <a class="card" href="neonveld.html">
-    <div class="card-banner"></div>
-    <div class="card-body">
-      <h3>Neonveld Festival</h3>
-      <p class="meta">📅 14 juni 2025</p>
-      <p class="meta">📍 Westerpark, Amsterdam</p>
-    </div>
-  </a>
+<div class="filters" id="filters"></div>
 
-  <a class="card" href="straatfood.html">
-    <div class="card-banner"></div>
-    <div class="card-body">
-      <h3>Straatfood Nachtmarkt</h3>
-      <p class="meta">📅 2 juli 2025</p>
-      <p class="meta">📍 Havenplein, Rotterdam</p>
-    </div>
-  </a>
-
-  <a class="card" href="zomerklanken.html">
-    <div class="card-banner"></div>
-    <div class="card-body">
-      <h3>Zomerklanken Live</h3>
-      <p class="meta">📅 23 augustus 2025</p>
-      <p class="meta">📍 Domplein, Utrecht</p>
-    </div>
-  </a>
-</section>
+<section class="cards" id="evenementen"></section>
+<p class="empty" id="empty" hidden>Geen evenementen gevonden voor deze categorie. Kies een andere filter.</p>
 
 <div class="greet">
   <button onclick="zegHallo()">Zeg hallo 👋</button>
   <div id="greeting"></div>
 </div>
 
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Sluiten">✕</button>
+    <div class="modal-banner"></div>
+    <div class="modal-body">
+      <h2 id="modalTitle"></h2>
+      <p class="meta" id="modalDate"></p>
+      <p class="meta" id="modalLocation"></p>
+      <p class="meta" id="modalCategory"></p>
+      <p class="desc" id="modalDesc"></p>
+    </div>
+  </div>
+</div>
+
 <script>
+  const events = [
+    { naam: "Neonveld Festival", datum: "14 juni 2025", locatie: "Westerpark, Amsterdam", categorie: "Muziek",
+      beschrijving: "Een avond vol elektronische muziek, lichtinstallaties en foodtrucks in het groen." },
+    { naam: "Zomerklanken Live", datum: "23 augustus 2025", locatie: "Domplein, Utrecht", categorie: "Muziek",
+      beschrijving: "Intieme akoestische optredens van opkomend talent onder de sterren." },
+    { naam: "Straatfood Nachtmarkt", datum: "2 juli 2025", locatie: "Havenplein, Rotterdam", categorie: "Eten",
+      beschrijving: "Meer dan veertig kraampjes met streetfood uit alle windstreken tot diep in de nacht." },
+    { naam: "Proeverij der Provincies", datum: "10 september 2025", locatie: "Vrijthof, Maastricht", categorie: "Eten",
+      beschrijving: "Streekproducten en gerechten uit heel Nederland, geproefd op één plein." },
+    { naam: "Museumnacht XL", datum: "5 oktober 2025", locatie: "Museumplein, Amsterdam", categorie: "Cultuur",
+      beschrijving: "Musea openen 's nachts hun deuren met speciale rondleidingen en optredens." },
+    { naam: "Theater onder de Sterren", datum: "18 juli 2025", locatie: "Stadspark, Groningen", categorie: "Cultuur",
+      beschrijving: "Openluchttheater met lokale gezelschappen, dekens meenemen aanbevolen." }
+  ];
+
+  const categorieën = ["Alle", ...new Set(events.map(e => e.categorie))];
+  let actieveCategorie = "Alle";
+
+  const filtersEl = document.getElementById('filters');
+  const cardsEl = document.getElementById('evenementen');
+  const emptyEl = document.getElementById('empty');
+
+  function renderFilters() {
+    filtersEl.innerHTML = categorieën.map(c =>
+      `<button class="filter-btn${c === actieveCategorie ? ' active' : ''}" data-cat="${c}">${c}</button>`
+    ).join('');
+    filtersEl.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        actieveCategorie = btn.dataset.cat;
+        renderFilters();
+        renderCards();
+      });
+    });
+  }
+
+  function renderCards() {
+    const gefilterd = actieveCategorie === "Alle"
+      ? events
+      : events.filter(e => e.categorie === actieveCategorie);
+
+    emptyEl.hidden = gefilterd.length > 0;
+    cardsEl.innerHTML = gefilterd.map((e, i) => `
+      <button class="card" data-index="${events.indexOf(e)}">
+        <div class="card-banner"><span class="tag">${e.categorie}</span></div>
+        <div class="card-body">
+          <h3>${e.naam}</h3>
+          <p class="meta">📅 ${e.datum}</p>
+          <p class="meta">📍 ${e.locatie}</p>
+        </div>
+      </button>
+    `).join('');
+
+    cardsEl.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => openModal(events[card.dataset.index]));
+    });
+  }
+
+  const overlay = document.getElementById('overlay');
+  function openModal(e) {
+    document.getElementById('modalTitle').textContent = e.naam;
+    document.getElementById('modalDate').textContent = "📅 " + e.datum;
+    document.getElementById('modalLocation').textContent = "📍 " + e.locatie;
+    document.getElementById('modalCategory').textContent = "🏷 " + e.categorie;
+    document.getElementById('modalDesc').textContent = e.beschrijving;
+    overlay.classList.add('open');
+  }
+  function closeModal() {
+    overlay.classList.remove('open');
+  }
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (ev) => { if (ev.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeModal(); });
+
   function zegHallo() {
     const groeten = [
       "Hoi! Fijn dat je er bent 🎉",
@@ -69,6 +350,9 @@
     const keuze = groeten[Math.floor(Math.random() * groeten.length)];
     document.getElementById('greeting').textContent = keuze;
   }
+
+  renderFilters();
+  renderCards();
 </script>
 
 </body>
