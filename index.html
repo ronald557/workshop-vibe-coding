@@ -245,7 +245,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+    overflow: hidden;
     flex-shrink: 0;
   }
 
@@ -447,7 +447,6 @@
       karakter: 'Let op je onderbouwing en of je vraag wel scherp genoeg is.',
       kleur: '#FFE600',
       kleurTekst: '#000000',
-      initialen: 'MW',
       reactie: {
         toon: 'methodisch',
         kernpunt: 'Je schuift twee dingen door elkaar: een ontwerpvraag en een ' +
@@ -473,7 +472,6 @@
       karakter: 'Praat vanuit een gewone dag, niet vanuit theorie.',
       kleur: '#007BC7',
       kleurTekst: '#FFFFFF',
-      initialen: 'SV',
       reactie: {
         toon: 'concreet',
         kernpunt: 'Op een drukke dag open ik echt geen app om een plek te zoeken — dan ' +
@@ -499,7 +497,6 @@
       karakter: 'Gelooft niets tot het bewezen is en zoekt het gat in je verhaal.',
       kleur: '#2D2382',
       kleurTekst: '#FFFFFF',
-      initialen: 'HB',
       reactie: {
         toon: 'kritisch',
         kernpunt: 'Je aanname is dat studenten hun rustplek willen delen. ' +
@@ -526,7 +523,6 @@
       karakter: 'Denkt in budget, planning en wat het uiteindelijk oplevert.',
       kleur: '#F07800',
       kleurTekst: '#000000',
-      initialen: 'EB',
       reactie: {
         toon: 'zakelijk',
         kernpunt: 'De campus heeft al roostersoftware en sensoren in de gebouwen. Een ' +
@@ -551,7 +547,6 @@
       karakter: 'Vraagt wie er buiten de boot valt en wat er met gegevens gebeurt.',
       kleur: '#82C8B4',
       kleurTekst: '#000000',
-      initialen: 'RN',
       reactie: {
         toon: 'bedachtzaam',
         kernpunt: 'Je bouwt ongemerkt een kaart van waar mensen zich terugtrekken, en ' +
@@ -576,7 +571,6 @@
       karakter: 'Enthousiast, denkt hardop mee en ziet vooral kansen.',
       kleur: '#FFB9D7',
       kleurTekst: '#000000',
-      initialen: 'TV',
       reactie: {
         toon: 'enthousiast',
         kernpunt: 'Hier loop ik zelf tegenaan, ik zou dit morgen gebruiken. Je zou ' +
@@ -617,6 +611,51 @@
   var wisselBtn = document.getElementById('wissel-btn');
   var opnieuwBtn = document.getElementById('opnieuw-btn');
   var voortgangItems = document.querySelectorAll('#voortgang li');
+
+  function maakAvatarIcon() {
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('width', '26');
+    svg.setAttribute('height', '26');
+    svg.setAttribute('aria-hidden', 'true');
+
+    var schouders = document.createElementNS(svgNS, 'path');
+    schouders.setAttribute('d', 'M3 23c0-5.4 4.4-8.8 9-8.8s9 3.4 9 8.8');
+    schouders.setAttribute('fill', 'currentColor');
+    svg.appendChild(schouders);
+
+    var hoofd = document.createElementNS(svgNS, 'circle');
+    hoofd.setAttribute('cx', '12');
+    hoofd.setAttribute('cy', '8.4');
+    hoofd.setAttribute('r', '5.4');
+    hoofd.setAttribute('fill', 'currentColor');
+    svg.appendChild(hoofd);
+
+    var oogLinks = document.createElementNS(svgNS, 'circle');
+    oogLinks.setAttribute('cx', '9.8');
+    oogLinks.setAttribute('cy', '8.2');
+    oogLinks.setAttribute('r', '0.9');
+    oogLinks.setAttribute('fill', 'var(--kleur)');
+    svg.appendChild(oogLinks);
+
+    var oogRechts = document.createElementNS(svgNS, 'circle');
+    oogRechts.setAttribute('cx', '14.2');
+    oogRechts.setAttribute('cy', '8.2');
+    oogRechts.setAttribute('r', '0.9');
+    oogRechts.setAttribute('fill', 'var(--kleur)');
+    svg.appendChild(oogRechts);
+
+    var mond = document.createElementNS(svgNS, 'path');
+    mond.setAttribute('d', 'M9.4 10.9c1 1.1 4.2 1.1 5.2 0');
+    mond.setAttribute('stroke', 'var(--kleur)');
+    mond.setAttribute('stroke-width', '1.1');
+    mond.setAttribute('stroke-linecap', 'round');
+    mond.setAttribute('fill', 'none');
+    svg.appendChild(mond);
+
+    return svg;
+  }
 
   function toon(nummer) {
     state.scherm = nummer;
@@ -705,8 +744,7 @@
 
       var avatar = document.createElement('span');
       avatar.className = 'avatar';
-      avatar.setAttribute('aria-hidden', 'true');
-      avatar.textContent = p.initialen;
+      avatar.appendChild(maakAvatarIcon());
       top.appendChild(avatar);
 
       var namenWrap = document.createElement('span');
@@ -799,8 +837,7 @@
 
       var avatar = document.createElement('span');
       avatar.className = 'avatar';
-      avatar.setAttribute('aria-hidden', 'true');
-      avatar.textContent = p.initialen;
+      avatar.appendChild(maakAvatarIcon());
       top.appendChild(avatar);
 
       var namenWrap = document.createElement('span');
