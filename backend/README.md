@@ -29,14 +29,20 @@ voorbeeldreacties, zoals nu. Deze stappen zijn dus optioneel.
 
 ### 2. Een Cloudflare Worker aanmaken
 
+Let op: Cloudflare verandert de indeling van het dashboard af en toe. Klopt
+een naam hieronder niet meer met wat je ziet? Zoek naar het woord "Workers"
+in het linkermenu of de zoekbalk bovenin (Ctrl/Cmd+K).
+
 1. Ga naar https://dash.cloudflare.com en log in of maak een gratis account.
-2. Kies in het menu **Workers & Pages** → **Create** → **Create Worker**.
-3. Geef de Worker een naam (bijvoorbeeld `limburgs-panel-backend`) en klik
+2. Klik in het linkermenu op **Compute** (onder het kopje "Build").
+3. Klik in het submenu op **Workers**, en daarna op **Create** (soms
+   **Create Worker** genoemd).
+4. Geef de Worker een naam (bijvoorbeeld `limburgs-panel-backend`) en klik
    op **Deploy** (dit zet eerst een lege voorbeeld-Worker live).
-4. Klik daarna op **Edit code** (soms "Quick edit" genoemd).
-5. Verwijder de voorbeeldcode die er staat, en plak in plaats daarvan de
+5. Klik daarna op **Edit code** (soms "Quick edit" genoemd).
+6. Verwijder de voorbeeldcode die er staat, en plak in plaats daarvan de
    volledige inhoud van `worker.js` uit deze map.
-6. Klik op **Save and deploy** (of **Deploy**).
+7. Klik op **Save and deploy** (of **Deploy**).
 
 ### 3. De AI-sleutel veilig toevoegen
 
