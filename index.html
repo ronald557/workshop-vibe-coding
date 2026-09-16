@@ -350,82 +350,125 @@
     margin: 0;
   }
 
-  .vervolg-blok {
-    margin-top: 4px;
-    padding-top: 12px;
-    border-top: 1px dashed var(--vlak-rand);
+  /* Gesprek: het panel reageert op elkaar, chatgewijs */
+  .gesprek {
+    margin-top: 24px;
+    background: #F4F2EC;
+    border: 1px solid var(--vlak-rand);
+    border-radius: 8px;
+    padding: 20px;
   }
 
-  .vervolg-kop {
-    font-weight: 700;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+  .gesprek-kop {
+    font-weight: 800;
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+  }
+
+  .gesprek-status {
+    margin: 0;
     color: var(--tekst-zacht);
-    margin: 0 0 4px;
+    font-size: 0.9rem;
   }
 
-  .vervolg-tekst {
-    margin: 0 0 10px;
+  .gesprek-berichten {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
-  .suggestie-kader {
-    background: #F5F5F5;
-    border-left: 3px solid var(--accent);
-    border-radius: 4px;
-    padding: 10px 12px;
+  .bericht {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: berichtVerschijnt 0.4s ease forwards;
   }
 
-  .suggestie-kop {
-    display: block;
+  @media (prefers-reduced-motion: reduce) {
+    .bericht { animation-duration: 0.01s; }
+  }
+
+  @keyframes berichtVerschijnt {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .bericht-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--kleur, var(--accent));
+    color: var(--kleur-tekst, #FFFFFF);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .bericht-inhoud {
+    max-width: 78%;
+  }
+
+  .bericht-naam {
     font-weight: 700;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    color: var(--accent);
-    margin-bottom: 2px;
+    font-size: 0.8rem;
+    margin: 0 0 3px;
+    color: var(--tekst);
   }
 
-  .suggestie-kader p {
+  .bericht-bel {
+    background: #FFFFFF;
+    border: 1px solid var(--vlak-rand);
+    border-radius: 12px;
+    border-top-left-radius: 4px;
+    padding: 10px 14px;
+  }
+
+  .bericht-bel p {
     margin: 0;
   }
 
-  .samenvatting {
-    margin-top: 24px;
+  .bericht-suggestie {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--vlak-rand);
+    font-size: 0.9rem;
+    color: var(--tekst-zacht);
+  }
+
+  .bericht-suggestie strong {
+    color: var(--tekst);
+  }
+
+  .gezamenlijk-bericht {
     background: var(--zwart);
     color: var(--wit);
-    border-radius: 4px;
-    padding: 24px;
+    border-radius: 12px;
+    padding: 18px;
+    max-width: 92%;
   }
 
-  .samenvatting h3 {
-    margin: 0 0 12px;
-    font-size: 1.2rem;
+  .gezamenlijk-kop {
+    display: block;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 6px;
   }
 
-  .samenvatting p {
+  .gezamenlijk-bericht p {
     margin: 0;
-    color: #CFCFCF;
-  }
-
-  .samenvatting ul {
-    margin: 0;
-    padding-left: 20px;
-  }
-
-  .samenvatting li {
-    margin-bottom: 8px;
-  }
-
-  .samenvatting li:last-child {
-    margin-bottom: 0;
   }
 
   [hidden] { display: none !important; }
 
   /* Achtergrond: silhouet provincie Limburg */
   body {
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgNDYwIj48cGF0aCBkPSJNMTE4LDYgTDEzMiwyMiBMMTIwLDQwIEwxNTAsNTUgTDE3OCw5MCBMMTY4LDEzMCBMMTUwLDE2NSBMMTY4LDE5NSBMMTc4LDIyNSBMMTYwLDI1NSBMMTcyLDI5MCBMMTYwLDMyNSBMMTM1LDM1NSBMMTQ1LDM4NSBMMTIwLDQxMCBMMTAwLDQyNSBMNzgsNDA4IEw5MCwzODAgTDcwLDM1MCBMODIsMzE1IEw2NSwyODUgTDc1LDI1MCBMNTUsMjIwIEw2OCwxOTAgTDUwLDE1NSBMNzUsMTMwIEw2NSw5NSBMOTAsNjUgTDEwMCwzNSBaIiBmaWxsPSJub25lIiBzdHJva2U9IiNEOUQ5RDkiIHN0cm9rZS13aWR0aD0iNC41IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+");
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMzAwIj48cGF0aCBkPSJNMTAwLDQgTDExMiwxNCBMMTAwLDI2IEwxMjgsNDAgTDE1Miw2MiBMMTYyLDkwIEwxNTUsMTE4IEwxNDIsMTM4IEwxNTAsMTU4IEwxMzgsMTc4IEwxMjIsMTkwIEwxMzIsMjEyIEwxMzYsMjM4IEwxMjAsMjU4IEwxMjgsMjcyIEwxMTIsMjY4IEwxMTgsMjgwIEwxMDAsMjc2IEwxMDQsMjg4IEw4NiwyODIgTDkwLDI5NCBMNzIsMjg2IEw3NiwyOTYgTDU4LDI4OCBMNjQsMjc2IEw0OCwyNjggTDU2LDI1MiBMNDQsMjMwIEw1MiwyMDQgTDM0LDE4OCBMNTQsMTY4IEwzMCwxNTAgTDQ0LDEyNCBMMzQsOTggTDUwLDcyIEwzOCw1MCBMNjQsMzQgTDc0LDE2IFoiIGZpbGw9IiNFQ0VDRUMiIHN0cm9rZT0iI0JGQkZCRiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+");
     background-repeat: no-repeat;
     background-position: right center;
     background-size: auto 80vh;
@@ -506,7 +549,10 @@
 
     <div class="panel-grid" id="panel-grid"></div>
 
-    <div class="samenvatting" id="samenvatting" hidden></div>
+    <div class="gesprek" id="gesprek" hidden>
+      <p class="gesprek-kop">Het panel bespreekt je idee</p>
+      <div class="gesprek-berichten" id="gesprek-berichten"></div>
+    </div>
 
     <div class="acties">
       <button type="button" class="btn-secundair" id="wissel-btn">← Wissel persona's</button>
@@ -571,7 +617,7 @@
       idee: { titel: idee.titel, omschrijving: idee.omschrijving, tag: idee.tag },
       paneel: paneel
     }).then(function (data) {
-      if (!data || !Array.isArray(data.verbeterpunten) || data.verbeterpunten.length === 0) {
+      if (!data || !data.suggestie) {
         throw new Error('Onvolledig AI-antwoord');
       }
       return data;
@@ -773,7 +819,8 @@
   var naarScherm3Btn = document.getElementById('naar-scherm3-btn');
   var ideeSamenvatting = document.getElementById('idee-samenvatting');
   var panelGrid = document.getElementById('panel-grid');
-  var samenvattingEl = document.getElementById('samenvatting');
+  var gesprekEl = document.getElementById('gesprek');
+  var gesprekBerichten = document.getElementById('gesprek-berichten');
   var wisselBtn = document.getElementById('wissel-btn');
   var opnieuwBtn = document.getElementById('opnieuw-btn');
   var voortgangItems = document.querySelectorAll('#voortgang li');
@@ -989,6 +1036,74 @@
     toon(3);
   });
 
+  function maakBerichtWachtrij() {
+    var wachtrij = Promise.resolve();
+    return function (renderFn) {
+      wachtrij = wachtrij.then(function () {
+        renderFn();
+        return new Promise(function (resolve) { setTimeout(resolve, 500); });
+      });
+    };
+  }
+
+  function maakBericht(persoon, tekst, suggestie) {
+    var bericht = document.createElement('div');
+    bericht.className = 'bericht';
+
+    var avatar = document.createElement('span');
+    avatar.className = 'bericht-avatar';
+    avatar.style.setProperty('--kleur', persoon.kleur);
+    avatar.style.setProperty('--kleur-tekst', persoon.kleurTekst);
+    avatar.appendChild(maakAvatarIcon());
+
+    var inhoud = document.createElement('div');
+    inhoud.className = 'bericht-inhoud';
+
+    var naamEl = document.createElement('p');
+    naamEl.className = 'bericht-naam';
+    naamEl.textContent = persoon.naam;
+    inhoud.appendChild(naamEl);
+
+    var bel = document.createElement('div');
+    bel.className = 'bericht-bel';
+    var tekstEl = document.createElement('p');
+    tekstEl.textContent = tekst;
+    bel.appendChild(tekstEl);
+
+    if (suggestie) {
+      var suggestieEl = document.createElement('p');
+      suggestieEl.className = 'bericht-suggestie';
+      var suggestieLabel = document.createElement('strong');
+      suggestieLabel.textContent = 'Suggestie: ';
+      suggestieEl.appendChild(suggestieLabel);
+      suggestieEl.appendChild(document.createTextNode(suggestie));
+      bel.appendChild(suggestieEl);
+    }
+
+    inhoud.appendChild(bel);
+    bericht.appendChild(avatar);
+    bericht.appendChild(inhoud);
+    return bericht;
+  }
+
+  function maakGezamenlijkBericht(tekst) {
+    var bericht = document.createElement('div');
+    bericht.className = 'bericht';
+
+    var inhoud = document.createElement('div');
+    inhoud.className = 'gezamenlijk-bericht';
+    var kop = document.createElement('span');
+    kop.className = 'gezamenlijk-kop';
+    kop.textContent = 'Gezamenlijke suggestie van het panel';
+    var tekstEl = document.createElement('p');
+    tekstEl.textContent = tekst;
+    inhoud.appendChild(kop);
+    inhoud.appendChild(tekstEl);
+
+    bericht.appendChild(inhoud);
+    return bericht;
+  }
+
   function renderPanel() {
     ideeSamenvatting.innerHTML = '';
     var titel = document.createElement('h2');
@@ -1006,8 +1121,8 @@
     var gebruikAi = backendGeconfigureerd();
 
     panelGrid.innerHTML = '';
-    samenvattingEl.innerHTML = '';
-    samenvattingEl.hidden = true;
+    gesprekBerichten.innerHTML = '';
+    gesprekEl.hidden = true;
 
     var ronde1Beloftes = [];
 
@@ -1061,37 +1176,6 @@
       vraagKader.appendChild(vraagTekst);
       kaart.appendChild(vraagKader);
 
-      var vervolgBlok = null;
-      var vervolgTekst = null;
-      var suggestieTekst = null;
-
-      if (gebruikAi) {
-        vervolgBlok = document.createElement('div');
-        vervolgBlok.className = 'vervolg-blok';
-        vervolgBlok.hidden = true;
-
-        var vervolgKop = document.createElement('p');
-        vervolgKop.className = 'vervolg-kop';
-        vervolgKop.textContent = 'Reactie op het panel';
-        vervolgBlok.appendChild(vervolgKop);
-
-        vervolgTekst = document.createElement('p');
-        vervolgTekst.className = 'vervolg-tekst';
-        vervolgBlok.appendChild(vervolgTekst);
-
-        var suggestieKader = document.createElement('div');
-        suggestieKader.className = 'suggestie-kader';
-        var suggestieKop = document.createElement('span');
-        suggestieKop.className = 'suggestie-kop';
-        suggestieKop.textContent = 'Suggestie:';
-        suggestieTekst = document.createElement('p');
-        suggestieKader.appendChild(suggestieKop);
-        suggestieKader.appendChild(suggestieTekst);
-        vervolgBlok.appendChild(suggestieKader);
-
-        kaart.appendChild(vervolgBlok);
-      }
-
       panelGrid.appendChild(kaart);
 
       function toonReactie(reactie) {
@@ -1118,51 +1202,54 @@
           naam: p.naam,
           rol: p.rol,
           karakter: p.karakter,
+          kleur: p.kleur,
+          kleurTekst: p.kleurTekst,
           kernpunt: plattTekst(reactie.kernpunt),
-          vraag: plattTekst(reactie.vraag),
-          vervolgBlok: vervolgBlok,
-          vervolgTekst: vervolgTekst,
-          suggestieTekst: suggestieTekst
+          vraag: plattTekst(reactie.vraag)
         };
       }));
     });
 
     if (!gebruikAi) return;
 
-    // Ronde 2: elke persona reageert op de eerste reacties van de anderen.
+    gesprekEl.hidden = false;
+    var statusEl = document.createElement('p');
+    statusEl.className = 'gesprek-status';
+    statusEl.textContent = 'Het panel overlegt …';
+    gesprekBerichten.appendChild(statusEl);
+
+    var toonMetVertraging = maakBerichtWachtrij();
+
+    // Ronde 2: elke persona reageert op de eerste reacties van de anderen,
+    // als chatberichten die één voor één binnenkomen.
     Promise.all(ronde1Beloftes).then(function (deelnemers) {
       var ronde2Beloftes = deelnemers.map(function (deelnemer) {
         var anderen = deelnemers.filter(function (d) { return d.id !== deelnemer.id; })
           .map(function (d) { return { naam: d.naam, rol: d.rol, kernpunt: d.kernpunt, vraag: d.vraag }; });
 
-        deelnemer.vervolgBlok.hidden = false;
-        deelnemer.vervolgTekst.textContent = deelnemer.naam + ' bekijkt de andere reacties …';
-
         var persoonInfo = { naam: deelnemer.naam, rol: deelnemer.rol, karakter: deelnemer.karakter };
         return haalAiVervolgOp(state.idee, persoonInfo, anderen).then(function (resultaat) {
-          deelnemer.vervolgTekst.textContent = resultaat.reactieOpPanel;
-          deelnemer.suggestieTekst.textContent = resultaat.suggestie;
           deelnemer.reactieOpPanel = resultaat.reactieOpPanel;
           deelnemer.suggestie = resultaat.suggestie;
+          toonMetVertraging(function () {
+            if (statusEl.parentNode) statusEl.remove();
+            gesprekBerichten.appendChild(maakBericht(deelnemer, resultaat.reactieOpPanel, resultaat.suggestie));
+          });
           return deelnemer;
         }).catch(function () {
-          deelnemer.vervolgBlok.hidden = true;
           return deelnemer;
         });
       });
 
-      // Ronde 3: een neutrale samenvatting van het hele gesprek.
+      // Ronde 3: het panel komt gezamenlijk met één suggestie voor het idee.
       Promise.all(ronde2Beloftes).then(function (bijgewerkt) {
         var compleet = bijgewerkt.filter(function (d) { return d.suggestie; });
-        if (compleet.length === 0) return;
-
-        samenvattingEl.hidden = false;
-        var kop = document.createElement('h3');
-        kop.textContent = 'Wat het panel je aanraadt';
-        samenvattingEl.appendChild(kop);
-        var laden = document.createElement('p');
-        laden.textContent = 'Het panel stelt een samenvatting op …';
-        samenvattingEl.appendChild(laden);
+        if (compleet.length === 0) {
+          toonMetVertraging(function () {
+            if (statusEl.parentNode) statusEl.remove();
+          });
+          return;
+        }
 
         var paneelVoorSamenvatting = compleet.map(function (d) {
           return {
@@ -1175,19 +1262,11 @@
         });
 
         haalAiSamenvattingOp(state.idee, paneelVoorSamenvatting).then(function (resultaat) {
-          samenvattingEl.innerHTML = '';
-          var kop2 = document.createElement('h3');
-          kop2.textContent = 'Wat het panel je aanraadt';
-          samenvattingEl.appendChild(kop2);
-          var lijst = document.createElement('ul');
-          resultaat.verbeterpunten.forEach(function (punt) {
-            var item = document.createElement('li');
-            item.textContent = punt;
-            lijst.appendChild(item);
+          toonMetVertraging(function () {
+            gesprekBerichten.appendChild(maakGezamenlijkBericht(resultaat.suggestie));
           });
-          samenvattingEl.appendChild(lijst);
         }).catch(function () {
-          samenvattingEl.hidden = true;
+          // Geen gezamenlijke suggestie beschikbaar; het gesprek blijft gewoon staan.
         });
       });
     });

@@ -157,17 +157,19 @@ async function afhandelenSamenvatting(env, payload) {
 
   const systeemPrompt =
     'Je bent een neutrale notulist bij een paneldiscussie over een idee. Je hebt het hele ' +
-    'gesprek gelezen en vat het samen tot concrete, bruikbare verbeterpunten voor de ' +
-    'indiener. Wees kort en concreet, geen algemeenheden, in het Nederlands.\n' +
-    'Antwoord ALLEEN met geldige JSON in exact dit formaat, zonder uitleg of opmaak eromheen:\n' +
-    '{"verbeterpunten": ["eerste verbeterpunt", "tweede verbeterpunt", "derde verbeterpunt"]}\n' +
-    'Geef drie tot vijf verbeterpunten, elk één zin.';
+    'gesprek gelezen, inclusief waar de panelleden het met elkaar eens en oneens waren. ' +
+    'Formuleer daaruit ÉÉN gezamenlijke, concrete suggestie voor de indiener om het idee ' +
+    'te verbeteren - de kern waar het gesprek op uitkomt. Wees concreet, geen ' +
+    'algemeenheden, in het Nederlands, in twee tot vier zinnen.\n' +
+    'Antwoord ALLEEN met geldige JSON in exact dit formaat, zonder uitleg of opmaak ' +
+    'eromheen:\n' +
+    '{"suggestie": "de gezamenlijke suggestie, twee tot vier zinnen"}';
 
   const gebruikerPrompt = ideeRegel(idee) + '\n\nHet paneelgesprek:\n' + gesprekTekst;
 
   const reactie = await vraagClaude(env, systeemPrompt, gebruikerPrompt);
 
-  if (!Array.isArray(reactie.verbeterpunten) || reactie.verbeterpunten.length === 0) {
+  if (!reactie.suggestie) {
     throw { status: 502, error: 'AI-antwoord mist verplichte velden.', ruw: reactie };
   }
   return reactie;
