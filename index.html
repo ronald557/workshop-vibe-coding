@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel — leg je idee voor aan zes persona's</title>
+<style>
+  :root {
+    --bg: #FBF9F6;
+    --tekst: #1F2430;
+    --tekst-zacht: #5B6270;
+    --kaart-rand: #E8E2D9;
+    --accent: #B8542A;
+    --accent-tekst: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--tekst);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+  }
+
+  body { min-height: 100vh; }
+
+  *:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 20px 64px;
+  }
+
+  /* Header */
+  .app-header {
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--kaart-rand);
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 20px 16px;
+  }
+
+  .logo {
+    margin: 0 0 16px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .voortgang {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .voortgang li {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--tekst-zacht);
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--kaart-rand);
+  }
+
+  .voortgang li .stap-nr {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--kaart-rand);
+    color: var(--tekst);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .voortgang li.actief {
+    color: var(--tekst);
+    font-weight: 600;
+    border-bottom-color: var(--accent);
+  }
+
+  .voortgang li.actief .stap-nr {
+    background: var(--accent);
+    color: var(--accent-tekst);
+  }
+
+  /* Schermen algemeen */
+  .scherm h2 {
+    margin: 8px 0 4px;
+    font-size: 1.6rem;
+  }
+
+  .onderschrift {
+    color: var(--tekst-zacht);
+    margin: 0 0 24px;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin: 20px 0 6px;
+  }
+
+  input[type="text"], textarea {
+    width: 100%;
+    font: inherit;
+    color: inherit;
+    background: #FFFFFF;
+    border: 1px solid var(--kaart-rand);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  textarea {
+    min-height: 110px;
+    resize: vertical;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .tag-btn {
+    font: inherit;
+    background: #FFFFFF;
+    border: 1px solid var(--kaart-rand);
+    color: var(--tekst);
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+
+  .tag-btn.gekozen {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-tekst);
+  }
+
+  .acties {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .btn {
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-tekst);
+    border-radius: 8px;
+    padding: 12px 22px;
+  }
+
+  .btn:disabled {
+    background: var(--kaart-rand);
+    border-color: var(--kaart-rand);
+    color: var(--tekst-zacht);
+    cursor: not-allowed;
+  }
+
+  .btn-secundair {
+    background: #FFFFFF;
+    color: var(--tekst);
+    border: 1px solid var(--kaart-rand);
+    border-radius: 8px;
+    padding: 12px 22px;
+  }
+
+  /* Persona-raster */
+  .persona-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .persona-card {
+    text-align: left;
+    background: #FFFFFF;
+    border: 2px solid var(--kaart-rand);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 1px 3px rgba(31, 36, 48, 0.06);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .persona-card.geselecteerd {
+    border-color: var(--kleur, var(--accent));
+  }
+
+  .persona-card:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .persona-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--kleur, var(--accent));
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .persona-naam { font-weight: 700; }
+  .persona-rol { color: var(--tekst-zacht); font-size: 0.9rem; }
+  .persona-karakter { font-size: 0.95rem; margin: 0; }
+
+  .vinkje {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--kleur, var(--accent));
+    color: #FFFFFF;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  .persona-card.geselecteerd .vinkje { display: flex; }
+
+  .teller {
+    margin: 18px 0 0;
+    color: var(--tekst-zacht);
+    font-size: 0.95rem;
+  }
+
+  /* Scherm 3 */
+  .idee-samenvatting {
+    margin-bottom: 24px;
+  }
+
+  .idee-samenvatting h2 {
+    margin-bottom: 6px;
+  }
+
+  .idee-tag-label {
+    display: inline-block;
+    background: var(--kaart-rand);
+    color: var(--tekst);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+  }
+
+  .panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .panel-kaart {
+    background: #FFFFFF;
+    border: 1px solid var(--kaart-rand);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(31, 36, 48, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .panel-kaart .persona-top { gap: 12px; }
+
+  .toon-label {
+    align-self: flex-start;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--kleur, var(--accent));
+    border: 1px solid var(--kleur, var(--accent));
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+
+  .kernpunt {
+    margin: 0;
+  }
+
+  .vraag-kader {
+    background: var(--kleur, var(--accent));
+    color: #FFFFFF;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .vraag-kader .vraag-kop {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .vraag-kader p {
+    margin: 0;
+  }
+
+  [hidden] { display: none !important; }
+
+  @media (max-width: 600px) {
+    .voortgang li span:not(.stap-nr) { display: none; }
+    .acties { flex-direction: column; }
+    .acties .btn, .acties .btn-secundair { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <p class="logo">Panel</p>
+    <ol class="voortgang" id="voortgang">
+      <li data-stap="1"><span class="stap-nr">1</span><span>Je idee</span></li>
+      <li data-stap="2"><span class="stap-nr">2</span><span>Je panel</span></li>
+      <li data-stap="3"><span class="stap-nr">3</span><span>De reacties</span></li>
+    </ol>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- Scherm 1: Idee invoeren -->
+  <section class="scherm" id="scherm-1">
+    <h2>Welk idee wil je voorleggen?</h2>
+
+    <label for="titel-input">Titel</label>
+    <input type="text" id="titel-input" required>
+
+    <label for="omschrijving-input">Korte omschrijving</label>
+    <textarea id="omschrijving-input"></textarea>
+
+    <div class="tags" id="tags" role="group" aria-label="Context">
+      <button type="button" class="tag-btn" data-tag="Afstudeerproject">Afstudeerproject</button>
+      <button type="button" class="tag-btn" data-tag="Concept">Concept</button>
+      <button type="button" class="tag-btn" data-tag="Onderzoeksvoorstel">Onderzoeksvoorstel</button>
+      <button type="button" class="tag-btn" data-tag="Ontwerpvraag">Ontwerpvraag</button>
+      <button type="button" class="tag-btn" data-tag="Anders">Anders</button>
+    </div>
+
+    <div class="acties">
+      <button type="button" class="btn-secundair" id="voorbeeld-btn">Vul voorbeeldidee in</button>
+      <button type="button" class="btn" id="naar-scherm2-btn" disabled>Kies je panel →</button>
+    </div>
+  </section>
+
+  <!-- Scherm 2: Persona's kiezen -->
+  <section class="scherm" id="scherm-2" hidden>
+    <h2>Wie wil je erover horen?</h2>
+    <p class="onderschrift">Kies drie of vier persona's. Hoe verschillender, hoe meer je ziet.</p>
+
+    <div class="persona-grid" id="persona-grid"></div>
+
+    <p class="teller" id="teller">0 van maximaal 4 gekozen</p>
+
+    <div class="acties">
+      <button type="button" class="btn-secundair" id="terug-naar-1-btn">← Terug</button>
+      <button type="button" class="btn" id="naar-scherm3-btn" disabled>Toon de reacties →</button>
+    </div>
+  </section>
+
+  <!-- Scherm 3: Panelreacties -->
+  <section class="scherm" id="scherm-3" hidden>
+    <div class="idee-samenvatting" id="idee-samenvatting"></div>
+
+    <div class="panel-grid" id="panel-grid"></div>
+
+    <div class="acties">
+      <button type="button" class="btn-secundair" id="wissel-btn">← Wissel persona's</button>
+      <button type="button" class="btn" id="opnieuw-btn">Begin opnieuw</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var voorbeeldIdee = {
+    titel: 'Stille Ruimte — vind een rustige plek op de campus',
+    omschrijving: 'Studenten die snel overprikkeld raken vinden tussen colleges door ' +
+      'geen rustige plek. Ik wil onderzoeken of een app kan helpen die laat zien welke ' +
+      'ruimtes op dit moment stil en vrij zijn, op basis van roosterdata en meldingen ' +
+      'van studenten zelf.',
+    tag: 'Afstudeerproject'
+  };
+
+  var personas = [
+    {
+      id: 'marieke',
+      naam: 'Marieke de Wit',
+      rol: 'Begeleider',
+      karakter: 'Let op je onderbouwing en of je vraag wel scherp genoeg is.',
+      kleur: '#3B5BA5',
+      initialen: 'MW',
+      reactie: {
+        toon: 'methodisch',
+        kernpunt: 'Je schuift twee dingen door elkaar: een ontwerpvraag en een ' +
+          'onderzoeksvraag. Je beschrijft de app al, en daarmee ligt de uitkomst vast ' +
+          'voordat je onderzoek begint. Begin bij wat je nog niet weet.',
+        vraag: 'Wat zou je onderzoek kunnen laten zien waardoor je deze app juist niet ' +
+          'gaat bouwen?'
+      },
+      reserve: function (titel) {
+        return {
+          toon: 'methodisch',
+          kernpunt: 'Voordat ik iets van «' + titel + '» kan vinden, wil ik weten welke ' +
+            'vraag eronder ligt. Nu lees ik vooral een oplossing. Formuleer eerst wat je ' +
+            'nog niet weet.',
+          vraag: 'Welke vraag beantwoordt «' + titel + '» die nu nog openstaat?'
+        };
+      }
+    },
+    {
+      id: 'sam',
+      naam: 'Sam Veldhuis',
+      rol: 'Eindgebruiker',
+      karakter: 'Praat vanuit een gewone dag, niet vanuit theorie.',
+      kleur: '#2F7D5A',
+      initialen: 'SV',
+      reactie: {
+        toon: 'concreet',
+        kernpunt: 'Op een drukke dag open ik echt geen app om een plek te zoeken — dan ' +
+          'ben ik al over mijn grens heen. Wat mij helpt is vooraf weten waar ik ' +
+          'terechtkan, niet ter plekke nog moeten zoeken. En klopt het één keer niet, ' +
+          'dan gebruik ik hem nooit meer.',
+        vraag: 'Wat gebeurt er met mijn vertrouwen als de app er één keer naast zit?'
+      },
+      reserve: function (titel) {
+        return {
+          toon: 'concreet',
+          kernpunt: 'Ik snap wat je met «' + titel + '» wil, maar ik zie mezelf het nog ' +
+            'niet gebruiken op een dag dat het tegenzit. Beschrijf eens het precieze ' +
+            'moment waarop ik dit zou pakken.',
+          vraag: 'Wat doe ik nu, op dat moment, zonder jouw idee?'
+        };
+      }
+    },
+    {
+      id: 'hakim',
+      naam: 'Hakim Boulahrouz',
+      rol: 'Scepticus',
+      karakter: 'Gelooft niets tot het bewezen is en zoekt het gat in je verhaal.',
+      kleur: '#8E2F3F',
+      initialen: 'HB',
+      reactie: {
+        toon: 'kritisch',
+        kernpunt: 'Je aanname is dat studenten hun rustplek willen delen. ' +
+          'Waarschijnlijker is dat ze hun goede plek juist geheimhouden. En werkt de ' +
+          'app wél, dan stromen de stille ruimtes vol en is het probleem terug — alleen ' +
+          'sneller.',
+        vraag: 'Wat weerhoudt jouw oplossing ervan zichzelf kapot te maken?'
+      },
+      reserve: function (titel) {
+        return {
+          toon: 'kritisch',
+          kernpunt: '«' + titel + '» rust op een aanname die je nog niet hebt getoetst. ' +
+            'Schrijf op wat waar moet zijn wil dit werken, en zoek dan het bewijs dat ' +
+            'het niet waar is.',
+          vraag: 'Welke aanname onder «' + titel + '» zou het hele plan onderuithalen ' +
+            'als hij niet klopt?'
+        };
+      }
+    },
+    {
+      id: 'ellen',
+      naam: 'Ellen Bouma',
+      rol: 'Opdrachtgever',
+      karakter: 'Denkt in budget, planning en wat het uiteindelijk oplevert.',
+      kleur: '#A5761B',
+      initialen: 'EB',
+      reactie: {
+        toon: 'zakelijk',
+        kernpunt: 'De campus heeft al roostersoftware en sensoren in de gebouwen. Een ' +
+          'losse app betekent een tweede systeem met eigen beheer en eigen kosten. Ik ' +
+          'zie dit eerder als functie binnen wat er al staat.',
+        vraag: 'Wie beheert dit over twee jaar, als jij allang bent afgestudeerd?'
+      },
+      reserve: function (titel) {
+        return {
+          toon: 'zakelijk',
+          kernpunt: 'Voor «' + titel + '» wil ik weten wat het kost en wat het ' +
+            'vervangt. Een goed idee dat niemand beheert, is over een jaar een ' +
+            'stilgevallen project.',
+          vraag: 'Wat kan er weg of stoppen zodra «' + titel + '» er is?'
+        };
+      }
+    },
+    {
+      id: 'ruth',
+      naam: 'Ruth Nakamura',
+      rol: 'Ethicus',
+      karakter: 'Vraagt wie er buiten de boot valt en wat er met gegevens gebeurt.',
+      kleur: '#6B4EA0',
+      initialen: 'RN',
+      reactie: {
+        toon: 'bedachtzaam',
+        kernpunt: 'Je bouwt ongemerkt een kaart van waar mensen zich terugtrekken, en ' +
+          'wie dat zijn. Prikkelgevoeligheid raakt aan gezondheid, dus dat is gevoelige ' +
+          'informatie. Ook een goedbedoelde meldknop legt vast wie waar zat.',
+        vraag: 'Kun je iemand helpen zonder te weten wie diegene is?'
+      },
+      reserve: function (titel) {
+        return {
+          toon: 'bedachtzaam',
+          kernpunt: 'Bij «' + titel + '» vraag ik me af voor wie het níét werkt, en ' +
+            'welke gegevens je onderweg verzamelt zonder dat iemand daarom vroeg.',
+          vraag: 'Wie draagt de last van «' + titel + '» zonder er zelf iets aan te ' +
+            'hebben?'
+        };
+      }
+    },
+    {
+      id: 'tygo',
+      naam: 'Tygo Vermeer',
+      rol: 'Medestudent',
+      karakter: 'Enthousiast, denkt hardop mee en ziet vooral kansen.',
+      kleur: '#1F7A8C',
+      initialen: 'TV',
+      reactie: {
+        toon: 'enthousiast',
+        kernpunt: 'Hier loop ik zelf tegenaan, ik zou dit morgen gebruiken. Je zou ' +
+          'zelfs verder kunnen gaan: laat mensen ook aangeven hóé het er voelt, niet ' +
+          'alleen of het vrij is. Maar begin klein, met één gebouw.',
+        vraag: 'Kun je dit volgende week testen met plakbriefjes in plaats van code?'
+      },
+      reserve: function (titel) {
+        return {
+          toon: 'enthousiast',
+          kernpunt: '«' + titel + '» klinkt goed, en ik zou het gewoon proberen. Zoek ' +
+            'de kleinst mogelijke versie die je deze week al aan iemand kunt laten ' +
+            'zien.',
+          vraag: 'Wat is de simpelste versie van «' + titel + '» die je zonder bouwen ' +
+            'kunt testen?'
+        };
+      }
+    }
+  ];
+
+  var state = {
+    scherm: 1,
+    idee: { titel: '', omschrijving: '', tag: '' },
+    gekozen: []
+  };
+
+  var titelInput = document.getElementById('titel-input');
+  var omschrijvingInput = document.getElementById('omschrijving-input');
+  var tagsWrap = document.getElementById('tags');
+  var voorbeeldBtn = document.getElementById('voorbeeld-btn');
+  var naarScherm2Btn = document.getElementById('naar-scherm2-btn');
+  var personaGrid = document.getElementById('persona-grid');
+  var teller = document.getElementById('teller');
+  var terugNaar1Btn = document.getElementById('terug-naar-1-btn');
+  var naarScherm3Btn = document.getElementById('naar-scherm3-btn');
+  var ideeSamenvatting = document.getElementById('idee-samenvatting');
+  var panelGrid = document.getElementById('panel-grid');
+  var wisselBtn = document.getElementById('wissel-btn');
+  var opnieuwBtn = document.getElementById('opnieuw-btn');
+  var voortgangItems = document.querySelectorAll('#voortgang li');
+
+  function toon(nummer) {
+    state.scherm = nummer;
+    document.querySelectorAll('.scherm').forEach(function (el) {
+      el.hidden = true;
+    });
+    document.getElementById('scherm-' + nummer).hidden = false;
+
+    voortgangItems.forEach(function (li) {
+      var actief = Number(li.getAttribute('data-stap')) === nummer;
+      li.classList.toggle('actief', actief);
+    });
+
+    if (nummer === 3) {
+      renderPanel();
+    }
+
+    window.scrollTo(0, 0);
+  }
+
+  function bijwerkenNaarScherm2Knop() {
+    naarScherm2Btn.disabled = state.idee.titel.trim().length === 0;
+  }
+
+  titelInput.addEventListener('input', function () {
+    state.idee.titel = titelInput.value;
+    bijwerkenNaarScherm2Knop();
+  });
+
+  omschrijvingInput.addEventListener('input', function () {
+    state.idee.omschrijving = omschrijvingInput.value;
+  });
+
+  tagsWrap.addEventListener('click', function (event) {
+    var btn = event.target.closest('.tag-btn');
+    if (!btn) return;
+    var tag = btn.getAttribute('data-tag');
+    var nu = btn.classList.contains('gekozen');
+    tagsWrap.querySelectorAll('.tag-btn').forEach(function (t) {
+      t.classList.remove('gekozen');
+    });
+    if (nu) {
+      state.idee.tag = '';
+    } else {
+      btn.classList.add('gekozen');
+      state.idee.tag = tag;
+    }
+  });
+
+  voorbeeldBtn.addEventListener('click', function () {
+    titelInput.value = voorbeeldIdee.titel;
+    omschrijvingInput.value = voorbeeldIdee.omschrijving;
+    state.idee.titel = voorbeeldIdee.titel;
+    state.idee.omschrijving = voorbeeldIdee.omschrijving;
+    state.idee.tag = voorbeeldIdee.tag;
+    tagsWrap.querySelectorAll('.tag-btn').forEach(function (t) {
+      t.classList.toggle('gekozen', t.getAttribute('data-tag') === voorbeeldIdee.tag);
+    });
+    bijwerkenNaarScherm2Knop();
+  });
+
+  naarScherm2Btn.addEventListener('click', function () {
+    if (naarScherm2Btn.disabled) return;
+    toon(2);
+  });
+
+  function renderPersonaGrid() {
+    personaGrid.innerHTML = '';
+    personas.forEach(function (p) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'persona-card';
+      btn.setAttribute('data-id', p.id);
+      btn.setAttribute('aria-pressed', 'false');
+      btn.style.setProperty('--kleur', p.kleur);
+
+      var vinkje = document.createElement('span');
+      vinkje.className = 'vinkje';
+      vinkje.setAttribute('aria-hidden', 'true');
+      vinkje.textContent = '✓';
+      btn.appendChild(vinkje);
+
+      var top = document.createElement('div');
+      top.className = 'persona-top';
+
+      var avatar = document.createElement('span');
+      avatar.className = 'avatar';
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = p.initialen;
+      top.appendChild(avatar);
+
+      var namenWrap = document.createElement('span');
+      var naam = document.createElement('span');
+      naam.className = 'persona-naam';
+      naam.textContent = p.naam;
+      var rol = document.createElement('span');
+      rol.className = 'persona-rol';
+      rol.style.display = 'block';
+      rol.textContent = p.rol;
+      namenWrap.appendChild(naam);
+      namenWrap.appendChild(rol);
+      top.appendChild(namenWrap);
+
+      btn.appendChild(top);
+
+      var karakter = document.createElement('p');
+      karakter.className = 'persona-karakter';
+      karakter.textContent = p.karakter;
+      btn.appendChild(karakter);
+
+      btn.addEventListener('click', function () {
+        togglePersona(p.id);
+      });
+
+      personaGrid.appendChild(btn);
+    });
+  }
+
+  function togglePersona(id) {
+    var idx = state.gekozen.indexOf(id);
+    if (idx > -1) {
+      state.gekozen.splice(idx, 1);
+    } else {
+      if (state.gekozen.length >= 4) return;
+      state.gekozen.push(id);
+    }
+    bijwerkenPersonaGrid();
+  }
+
+  function bijwerkenPersonaGrid() {
+    personaGrid.querySelectorAll('.persona-card').forEach(function (btn) {
+      var id = btn.getAttribute('data-id');
+      var geselecteerd = state.gekozen.indexOf(id) > -1;
+      btn.classList.toggle('geselecteerd', geselecteerd);
+      btn.setAttribute('aria-pressed', geselecteerd ? 'true' : 'false');
+      btn.disabled = !geselecteerd && state.gekozen.length >= 4;
+    });
+    teller.textContent = state.gekozen.length + ' van maximaal 4 gekozen';
+    naarScherm3Btn.disabled = state.gekozen.length < 3;
+  }
+
+  terugNaar1Btn.addEventListener('click', function () {
+    toon(1);
+  });
+
+  naarScherm3Btn.addEventListener('click', function () {
+    if (naarScherm3Btn.disabled) return;
+    toon(3);
+  });
+
+  function renderPanel() {
+    ideeSamenvatting.innerHTML = '';
+    var titel = document.createElement('h2');
+    titel.textContent = state.idee.titel;
+    ideeSamenvatting.appendChild(titel);
+
+    if (state.idee.tag) {
+      var tagLabel = document.createElement('span');
+      tagLabel.className = 'idee-tag-label';
+      tagLabel.textContent = state.idee.tag;
+      ideeSamenvatting.appendChild(tagLabel);
+    }
+
+    var isVoorbeeld = state.idee.titel.trim() === voorbeeldIdee.titel;
+
+    panelGrid.innerHTML = '';
+    state.gekozen.forEach(function (id) {
+      var p = personas.filter(function (item) { return item.id === id; })[0];
+      if (!p) return;
+      var reactie = isVoorbeeld ? p.reactie : p.reserve(state.idee.titel);
+
+      var kaart = document.createElement('article');
+      kaart.className = 'panel-kaart';
+      kaart.style.setProperty('--kleur', p.kleur);
+
+      var top = document.createElement('div');
+      top.className = 'persona-top';
+
+      var avatar = document.createElement('span');
+      avatar.className = 'avatar';
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = p.initialen;
+      top.appendChild(avatar);
+
+      var namenWrap = document.createElement('span');
+      var naam = document.createElement('span');
+      naam.className = 'persona-naam';
+      naam.textContent = p.naam;
+      var rol = document.createElement('span');
+      rol.className = 'persona-rol';
+      rol.style.display = 'block';
+      rol.textContent = p.rol;
+      namenWrap.appendChild(naam);
+      namenWrap.appendChild(rol);
+      top.appendChild(namenWrap);
+
+      kaart.appendChild(top);
+
+      var toonLabel = document.createElement('span');
+      toonLabel.className = 'toon-label';
+      toonLabel.textContent = reactie.toon;
+      kaart.appendChild(toonLabel);
+
+      var kernpunt = document.createElement('p');
+      kernpunt.className = 'kernpunt';
+      kernpunt.textContent = reactie.kernpunt;
+      kaart.appendChild(kernpunt);
+
+      var vraagKader = document.createElement('div');
+      vraagKader.className = 'vraag-kader';
+      var vraagKop = document.createElement('span');
+      vraagKop.className = 'vraag-kop';
+      vraagKop.textContent = 'Vraagt je:';
+      var vraagTekst = document.createElement('p');
+      vraagTekst.textContent = reactie.vraag;
+      vraagKader.appendChild(vraagKop);
+      vraagKader.appendChild(vraagTekst);
+      kaart.appendChild(vraagKader);
+
+      panelGrid.appendChild(kaart);
+    });
+  }
+
+  wisselBtn.addEventListener('click', function () {
+    toon(2);
+  });
+
+  opnieuwBtn.addEventListener('click', function () {
+    state.idee = { titel: '', omschrijving: '', tag: '' };
+    state.gekozen = [];
+    titelInput.value = '';
+    omschrijvingInput.value = '';
+    tagsWrap.querySelectorAll('.tag-btn').forEach(function (t) {
+      t.classList.remove('gekozen');
+    });
+    bijwerkenNaarScherm2Knop();
+    bijwerkenPersonaGrid();
+    toon(1);
+  });
+
+  renderPersonaGrid();
+  bijwerkenPersonaGrid();
+  toon(1);
+})();
+</script>
+
+</body>
+</html>
