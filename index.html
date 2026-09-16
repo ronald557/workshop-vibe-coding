@@ -817,6 +817,7 @@
   }
 
   function vulTekstMetTitel(element, inhoud) {
+    element.textContent = '';
     if (typeof inhoud === 'string') {
       element.textContent = inhoud;
       return;
