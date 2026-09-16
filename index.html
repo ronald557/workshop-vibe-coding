@@ -201,10 +201,10 @@
     font-weight: 700;
   }
 
-  /* Persona-raster */
+  /* Persona-raster: vast 3 kolommen, 2 rijen (zes persona's) */
   .persona-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
 
@@ -295,9 +295,10 @@
     font-weight: 600;
   }
 
+  /* Reactieraster: vast 2 kolommen (2 rijen bij 3 of 4 gekozen persona's) */
   .panel-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
 
@@ -424,11 +425,15 @@
 
   /* Achtergrond: silhouet provincie Limburg */
   body {
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgNTIwIj48cGF0aCBkPSJNNzAsOCBMMTUwLDE1IEwxNjgsNTUgTDE1MCwxMTAgTDEyMCwxNjAgTDEwMCwyMTAgTDExNSwyNjAgTDE0NSwzMDAgTDE1MCwzNTAgTDEzMCw0MDAgTDExMCw0NjAgTDk1LDUwNSBMNzgsNDcwIEw2MCw0MjAgTDUwLDM3MCBMNTUsMzIwIEw0NSwyNjAgTDU1LDIxMCBMNDAsMTYwIEwzNSwxMDAgTDUwLDUwIFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0VBRUFFQSIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+");
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgNDYwIj48cGF0aCBkPSJNMTE4LDYgTDEzMiwyMiBMMTIwLDQwIEwxNTAsNTUgTDE3OCw5MCBMMTY4LDEzMCBMMTUwLDE2NSBMMTY4LDE5NSBMMTc4LDIyNSBMMTYwLDI1NSBMMTcyLDI5MCBMMTYwLDMyNSBMMTM1LDM1NSBMMTQ1LDM4NSBMMTIwLDQxMCBMMTAwLDQyNSBMNzgsNDA4IEw5MCwzODAgTDcwLDM1MCBMODIsMzE1IEw2NSwyODUgTDc1LDI1MCBMNTUsMjIwIEw2OCwxOTAgTDUwLDE1NSBMNzUsMTMwIEw2NSw5NSBMOTAsNjUgTDEwMCwzNSBaIiBmaWxsPSJub25lIiBzdHJva2U9IiNEOUQ5RDkiIHN0cm9rZS13aWR0aD0iNC41IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+");
     background-repeat: no-repeat;
     background-position: right center;
-    background-size: auto 70vh;
+    background-size: auto 80vh;
     background-attachment: fixed;
+  }
+
+  @media (max-width: 860px) {
+    .persona-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
   @media (max-width: 600px) {
@@ -436,6 +441,8 @@
     .acties { flex-direction: column; }
     .acties .btn, .acties .btn-secundair { width: 100%; text-align: center; }
     body { background-image: none; }
+    .persona-grid { grid-template-columns: 1fr; }
+    .panel-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
