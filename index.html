@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panel — leg je idee voor aan zes persona's</title>
+<title>Het Limburgse Panel — leg je idee voor aan zes persona's</title>
 <style>
   :root {
     --bg: #FFFFFF;
@@ -351,10 +351,20 @@
 
   [hidden] { display: none !important; }
 
+  /* Achtergrond: silhouet provincie Limburg */
+  body {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMjAgNTIwIj48cGF0aCBkPSJNNzAsOCBMMTUwLDE1IEwxNjgsNTUgTDE1MCwxMTAgTDEyMCwxNjAgTDEwMCwyMTAgTDExNSwyNjAgTDE0NSwzMDAgTDE1MCwzNTAgTDEzMCw0MDAgTDExMCw0NjAgTDk1LDUwNSBMNzgsNDcwIEw2MCw0MjAgTDUwLDM3MCBMNTUsMzIwIEw0NSwyNjAgTDU1LDIxMCBMNDAsMTYwIEwzNSwxMDAgTDUwLDUwIFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0VBRUFFQSIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+");
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 70vh;
+    background-attachment: fixed;
+  }
+
   @media (max-width: 600px) {
     .voortgang li span:not(.stap-nr) { display: none; }
     .acties { flex-direction: column; }
     .acties .btn, .acties .btn-secundair { width: 100%; text-align: center; }
+    body { background-image: none; }
   }
 </style>
 </head>
@@ -362,7 +372,7 @@
 
 <header class="app-header">
   <div class="header-inner">
-    <p class="logo">Panel</p>
+    <p class="logo">Het Limburgse Panel</p>
     <ol class="voortgang" id="voortgang">
       <li data-stap="1"><span class="stap-nr">1</span><span>Je idee</span></li>
       <li data-stap="2"><span class="stap-nr">2</span><span>Je panel</span></li>
